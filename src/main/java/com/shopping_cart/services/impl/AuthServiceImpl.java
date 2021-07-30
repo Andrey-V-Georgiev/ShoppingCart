@@ -16,8 +16,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.shopping_cart.constants.GlobalConstants.SECRET_KEY;
-import static com.shopping_cart.constants.GlobalConstants.TOKEN_EXPIRY_TIME;
+import static com.shopping_cart.constants.AuthConstants.*;
 
 @Service
 public class AuthServiceImpl implements AuthService {

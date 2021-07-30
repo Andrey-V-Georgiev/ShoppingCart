@@ -11,7 +11,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.shopping_cart.constants.GlobalConstants.*;
+import static com.shopping_cart.constants.AuthConstants.*;
 
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
@@ -32,6 +32,12 @@ public class AuthInterceptor implements HandlerInterceptor {
 
             /* Get the user */
             UserServiceModel userServiceModel = this.userService.findUserById(userId);
+
+            /* Non-existing user with this ID */
+            if (userServiceModel == null) {
+                response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                return false;
+            }
 
             /* Obtain the naked token from the request header */
             String nakedToken = request.getHeader(AUTHORIZATION_HEADER).replace(AUTHORIZATION_PREFIX, "");

@@ -2,7 +2,6 @@ package com.shopping_cart.security;
 
 import io.jsonwebtoken.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -15,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.shopping_cart.constants.GlobalConstants.*;
+import static com.shopping_cart.constants.AuthConstants.*;
 
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
 

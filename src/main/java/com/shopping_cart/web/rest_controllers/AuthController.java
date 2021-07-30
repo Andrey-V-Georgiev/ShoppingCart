@@ -18,7 +18,8 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
-import static com.shopping_cart.constants.GlobalConstants.*;
+import static com.shopping_cart.constants.AuthConstants.*;
+import static com.shopping_cart.constants.ResponseMsgConstants.*;
 
 @RestController
 @RequestMapping("/auth")

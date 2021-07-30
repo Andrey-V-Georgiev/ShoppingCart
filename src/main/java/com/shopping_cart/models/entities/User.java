@@ -1,6 +1,8 @@
 package com.shopping_cart.models.entities;
 
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -28,6 +30,8 @@ public class User extends BaseEntity {
         this.registrationDate = registrationDate;
     }
 
+    @Length(min = 3, max = 20, message = "Username must be between 3 an 20 symbols")
+    @Column(name = "username", unique = true, nullable = false)
     public String getUsername() {
         return username;
     }

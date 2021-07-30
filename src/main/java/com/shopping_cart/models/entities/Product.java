@@ -17,27 +17,4 @@ public class Product extends BaseEntity {
     public Product() {
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public LocalDateTime getAddedOn() {
-        return addedOn;
-    }
-
-    public void setAddedOn(LocalDateTime addedOn) {
-        this.addedOn = addedOn;
-    }
 }
