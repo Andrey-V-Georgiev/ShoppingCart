@@ -1,6 +1,5 @@
 package com.shopping_cart.services.impl;
 
-import com.shopping_cart.enums.UserRole;
 import com.shopping_cart.models.binding_models.UserRegisterBindingModel;
 import com.shopping_cart.models.entities.User;
 import com.shopping_cart.models.service_models.UserServiceModel;
@@ -16,6 +15,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.shopping_cart.constants.UserRolesConstants.ROLE_USER;
+import static com.shopping_cart.constants.UserRolesConstants.ROLE_ADMIN;
 
 @Service
 @Transactional
@@ -49,8 +50,8 @@ public class UserServiceImpl implements UserService {
                 userRegisterBindingModel.getEmail());
 
         userServiceModelNew.setPassword(this.bCryptPasswordEncoder.encode(userRegisterBindingModel.getPassword()));
-        userServiceModelNew.setRole(repoCount > 0 ? UserRole.ROLE_USER : UserRole.ROLE_ADMIN);
-        userServiceModelNew.setAddDate(LocalDateTime.now());
+        userServiceModelNew.setRole(repoCount > 0 ? ROLE_USER : ROLE_ADMIN);
+        userServiceModelNew.setRegistrationDate(LocalDateTime.now());
 
         /* Save the user to DB */
         User userUnsaved = this.modelMapper.map(userServiceModelNew, User.class);

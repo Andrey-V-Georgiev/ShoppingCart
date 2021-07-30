@@ -1,6 +1,5 @@
 package com.shopping_cart.services.impl;
 
-import com.shopping_cart.enums.UserRole;
 import com.shopping_cart.models.entities.BlackToken;
 import com.shopping_cart.models.service_models.BlackTokenServiceModel;
 import com.shopping_cart.repositories.BlackTokenRepository;
@@ -32,7 +31,7 @@ public class AuthServiceImpl implements AuthService {
         this.modelMapper = modelMapper;
     }
 
-    public String createJwtToken(String userId, UserRole userRole) {
+    public String createJwtToken(String userId, String userRole) {
 
         List<GrantedAuthority> grantedAuthorities = AuthorityUtils
                 .commaSeparatedStringToAuthorityList(userRole.toString());

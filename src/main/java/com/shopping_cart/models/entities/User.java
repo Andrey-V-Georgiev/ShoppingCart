@@ -1,6 +1,5 @@
 package com.shopping_cart.models.entities;
 
-import com.shopping_cart.enums.UserRole;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,20 +12,20 @@ public class User extends BaseEntity {
     private String email;
     private String password;
     private String token;
-    private UserRole role;
-    private LocalDateTime addDate;
+    private String role;
+    private LocalDateTime registrationDate;
 
     public User() {
         super();
     }
 
-    public User(String username, String email, String password, String token, UserRole role, LocalDateTime addDate) {
+    public User(String username, String email, String password, String token, String role, LocalDateTime registrationDate) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.token = token;
         this.role = role;
-        this.addDate = addDate;
+        this.registrationDate = registrationDate;
     }
 
     public String getUsername() {
@@ -62,21 +61,20 @@ public class User extends BaseEntity {
         this.token = token;
     }
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
-    public UserRole getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(UserRole role) {
+    public void setRole(String role) {
         this.role = role;
     }
 
-    public LocalDateTime getAddDate() {
-        return addDate;
+    public LocalDateTime getRegistrationDate() {
+        return registrationDate;
     }
 
-    public void setAddDate(LocalDateTime addDate) {
-        this.addDate = addDate;
+    public void setRegistrationDate(LocalDateTime addDate) {
+        this.registrationDate = addDate;
     }
 }
