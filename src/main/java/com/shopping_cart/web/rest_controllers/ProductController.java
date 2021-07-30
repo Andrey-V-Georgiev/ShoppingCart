@@ -16,7 +16,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import java.util.List;
 
-import static com.shopping_cart.constants.UserRolesConstants.*;
+import static com.shopping_cart.constants.UserRoleConstants.*;
 
 
 @RestController

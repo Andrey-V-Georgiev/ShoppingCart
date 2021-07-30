@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.shopping_cart.constants.UserRolesConstants.*;
+import static com.shopping_cart.constants.UserRoleConstants.*;
 
 @Service
 @Transactional

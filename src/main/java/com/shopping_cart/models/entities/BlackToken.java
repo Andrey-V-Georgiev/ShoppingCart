@@ -1,12 +1,18 @@
 package com.shopping_cart.models.entities;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
+import static com.shopping_cart.constants.EntityMsgConstants.*;
+
 @Entity
-@Table(name = "blacktokens")
+@Table(name = "black_tokens")
 public class BlackToken extends BaseEntity {
 
     private String userId;
@@ -22,6 +28,7 @@ public class BlackToken extends BaseEntity {
         this.addDate = addDate;
     }
 
+    @Column(name = "user_id", nullable = false)
     public String getUserId() {
         return userId;
     }
@@ -30,7 +37,10 @@ public class BlackToken extends BaseEntity {
         this.userId = userId;
     }
 
-    @Column(name = "token", columnDefinition="TEXT", unique = true, nullable = false)
+    @NotEmpty(message = TOKEN_NOT_EMPTY)
+    @NotNull(message = TOKEN_NOT_NULL)
+    @Length(min = 3, message =  TOKEN_LENGTH)
+    @Column(name = "token", columnDefinition="TEXT")
     public String getToken() {
         return token;
     }

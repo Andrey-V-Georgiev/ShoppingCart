@@ -1,5 +1,6 @@
 package com.shopping_cart.models.service_models;
 
+
 import java.time.LocalDateTime;
 
 public class UserServiceModel extends BaseServiceModel {
@@ -10,6 +11,7 @@ public class UserServiceModel extends BaseServiceModel {
     private String token;
     private String role;
     private LocalDateTime registrationDate;
+    private CartServiceModel cart;
 
     public UserServiceModel() {
     }
@@ -17,15 +19,6 @@ public class UserServiceModel extends BaseServiceModel {
     public UserServiceModel(String username, String email) {
         this.username = username;
         this.email = email;
-    }
-
-    public UserServiceModel(String username, String email, String password, String token, String role, LocalDateTime registrationDate) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.token = token;
-        this.role = role;
-        this.registrationDate = registrationDate;
     }
 
     public String getUsername() {
@@ -74,5 +67,13 @@ public class UserServiceModel extends BaseServiceModel {
 
     public void setRegistrationDate(LocalDateTime registrationDate) {
         this.registrationDate = registrationDate;
+    }
+
+    public CartServiceModel getCart() {
+        return cart;
+    }
+
+    public void setCart(CartServiceModel cart) {
+        this.cart = cart;
     }
 }

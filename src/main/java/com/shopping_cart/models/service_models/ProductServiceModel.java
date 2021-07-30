@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 public class ProductServiceModel extends BaseServiceModel {
 
     private String name;
+    private String description;
     private BigDecimal price;
     private LocalDateTime addedOn;
 
@@ -18,6 +19,14 @@ public class ProductServiceModel extends BaseServiceModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public BigDecimal getPrice() {

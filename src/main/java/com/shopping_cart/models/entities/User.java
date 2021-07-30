@@ -1,10 +1,14 @@
 package com.shopping_cart.models.entities;
 
-
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
+
+import static com.shopping_cart.constants.EntityMsgConstants.*;
 
 @Entity
 @Table(name = "users")
@@ -16,22 +20,17 @@ public class User extends BaseEntity {
     private String token;
     private String role;
     private LocalDateTime registrationDate;
+    private Cart cart;
 
     public User() {
         super();
     }
 
-    public User(String username, String email, String password, String token, String role, LocalDateTime registrationDate) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.token = token;
-        this.role = role;
-        this.registrationDate = registrationDate;
-    }
 
-    @Length(min = 3, max = 20, message = "Username must be between 3 an 20 symbols")
-    @Column(name = "username", unique = true, nullable = false)
+    @NotEmpty(message = USERNAME_NOT_EMPTY)
+    @NotNull(message = USERNAME_NOT_NULL)
+    @Length(min = 3, max = 50, message = USERNAME_LENGTH)
+    @Column(name = "username", unique = true )
     public String getUsername() {
         return username;
     }
@@ -40,6 +39,10 @@ public class User extends BaseEntity {
         this.username = username;
     }
 
+    @NotEmpty(message = USER_EMAIL_NOT_EMPTY)
+    @NotNull(message = USER_EMAIL_NOT_NULL)
+    @Pattern(regexp = USER_EMAIL_REGEX, message = USER_EMAIL_REGEX_MSG)
+    @Column(name = "email")
     public String getEmail() {
         return email;
     }
@@ -48,6 +51,10 @@ public class User extends BaseEntity {
         this.email = email;
     }
 
+    @NotEmpty(message = PASSWORD_NOT_EMPTY)
+    @NotNull(message = PASSWORD_NOT_NULL)
+    @Length(min = 3, max = 50, message =  PASSWORD_LENGTH)
+    @Column(name = "password")
     public String getPassword() {
         return password;
     }
@@ -56,6 +63,9 @@ public class User extends BaseEntity {
         this.password = password;
     }
 
+    @NotEmpty(message = TOKEN_NOT_EMPTY)
+    @NotNull(message = TOKEN_NOT_NULL)
+    @Length(min = 3, message =  TOKEN_LENGTH)
     @Column(name = "token", columnDefinition="TEXT")
     public String getToken() {
         return token;
@@ -65,7 +75,10 @@ public class User extends BaseEntity {
         this.token = token;
     }
 
-    @Column(name = "role", nullable = false)
+    @NotEmpty(message = USER_ROLE_NOT_EMPTY)
+    @NotNull(message = USER_ROLE_NOT_NULL)
+    @Pattern(regexp = USER_ROLE_REGEX, message = USER_ROLE_REGEX_MSG)
+    @Column(name = "role")
     public String getRole() {
         return role;
     }
@@ -80,5 +93,15 @@ public class User extends BaseEntity {
 
     public void setRegistrationDate(LocalDateTime addDate) {
         this.registrationDate = addDate;
+    }
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id")
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 }

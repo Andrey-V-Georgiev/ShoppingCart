@@ -1,11 +1,7 @@
 package com.shopping_cart.models.service_models;
 
-
-import com.google.gson.annotations.Expose;
-
 public abstract class BaseServiceModel {
 
-    @Expose
     private String id;
 
     public BaseServiceModel() {

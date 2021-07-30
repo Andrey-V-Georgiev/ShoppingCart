@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.Size;
 import java.util.List;
 
-import static com.shopping_cart.constants.UserRolesConstants.HAS_ROLE_ADMIN_OR_USER;
+import static com.shopping_cart.constants.UserRoleConstants.HAS_ROLE_ADMIN_OR_USER;
 
 @RestController
 @RequestMapping("/cart")
