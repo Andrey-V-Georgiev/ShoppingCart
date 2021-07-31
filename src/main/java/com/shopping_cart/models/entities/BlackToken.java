@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 import static com.shopping_cart.constants.EntityMsgConstants.*;
@@ -31,7 +32,7 @@ public class BlackToken extends BaseEntity {
 
     @NotEmpty(message = TOKEN_NOT_EMPTY)
     @NotNull(message = TOKEN_NOT_NULL)
-    @Length(min = 3, message = TOKEN_LENGTH)
+    @Size(min = 3, message = TOKEN_LENGTH)
     @Column(name = "token", columnDefinition="TEXT")
     public String getToken() {
         return token;

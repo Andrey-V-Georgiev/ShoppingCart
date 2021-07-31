@@ -35,7 +35,7 @@ public class EntityMsgConstants {
 
     public static final String PASSWORD_NOT_EMPTY = "Password cannot be empty field";
     public static final String PASSWORD_NOT_NULL = "Password cannot be null";
-    public static final String PASSWORD_LENGTH = "Password must be between 3 and 50 symbols";
+    public static final String PASSWORD_LENGTH = "Password must be between 3 and 500 symbols";
 
     public static final String TOKEN_NOT_EMPTY = "Token cannot be empty field";
     public static final String TOKEN_NOT_NULL = "Token cannot be null";

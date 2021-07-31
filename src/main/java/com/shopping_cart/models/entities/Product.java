@@ -8,6 +8,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -27,7 +28,7 @@ public class Product extends BaseEntity {
 
     @NotEmpty(message = PRODUCT_NAME_NOT_EMPTY)
     @NotNull(message = PRODUCT_NAME_NOT_NULL)
-    @Length(min = 3, max = 50, message =  PRODUCT_NAME_LENGTH)
+    @Size(min = 3, max = 50, message =  PRODUCT_NAME_LENGTH)
     @Column(name = "name")
     public String getName() {
         return name;
@@ -39,7 +40,7 @@ public class Product extends BaseEntity {
 
     @NotEmpty(message = PRODUCT_DESCRIPTION_NOT_EMPTY)
     @NotNull(message = PRODUCT_DESCRIPTION_NOT_NULL)
-    @Length(min = 3, max = 500, message = PRODUCT_DESCRIPTION_LENGTH)
+    @Size(min = 3, max = 500, message = PRODUCT_DESCRIPTION_LENGTH)
     @Column(name = "description", columnDefinition="TEXT")
     public String getDescription() {
         return description;

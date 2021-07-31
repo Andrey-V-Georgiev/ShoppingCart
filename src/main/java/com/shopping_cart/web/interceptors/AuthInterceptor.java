@@ -27,8 +27,9 @@ public class AuthInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         String userId = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        boolean hasAuthorizationHeader = request.getHeader(AUTHORIZATION_HEADER) != null;
 
-        if (userId != null && request.getHeader(AUTHORIZATION_HEADER) != null) {
+        if (hasAuthorizationHeader) {
 
             /* Get the user */
             UserServiceModel userServiceModel = this.userService.findUserById(userId);

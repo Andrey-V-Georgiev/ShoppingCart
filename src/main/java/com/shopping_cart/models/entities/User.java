@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 import static com.shopping_cart.constants.EntityMsgConstants.*;
@@ -37,7 +38,7 @@ public class User extends BaseEntity {
 
     @NotEmpty(message = USERNAME_NOT_EMPTY)
     @NotNull(message = USERNAME_NOT_NULL)
-    @Length(min = 3, max = 50, message = USERNAME_LENGTH)
+    @Size(min = 3, max = 50, message = USERNAME_LENGTH)
     @Column(name = "username", unique = true )
     public String getUsername() {
         return username;
@@ -61,7 +62,7 @@ public class User extends BaseEntity {
 
     @NotEmpty(message = PASSWORD_NOT_EMPTY)
     @NotNull(message = PASSWORD_NOT_NULL)
-    @Length(min = 3, max = 50, message =  PASSWORD_LENGTH)
+    @Size(min = 3, max = 500, message =  PASSWORD_LENGTH)
     @Column(name = "password")
     public String getPassword() {
         return password;
@@ -71,9 +72,6 @@ public class User extends BaseEntity {
         this.password = password;
     }
 
-    @NotEmpty(message = TOKEN_NOT_EMPTY)
-    @NotNull(message = TOKEN_NOT_NULL)
-    @Length(min = 3, message =  TOKEN_LENGTH)
     @Column(name = "token", columnDefinition="TEXT")
     public String getToken() {
         return token;
