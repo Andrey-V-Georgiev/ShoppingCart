@@ -8,13 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Size;
 import java.util.List;
 
 import static com.shopping_cart.constants.ResponseMsgConstants.*;
@@ -25,19 +23,16 @@ import static com.shopping_cart.constants.UserRoleConstants.*;
 @RequestMapping("/product")
 public class ProductController {
 
-    private final ModelMapper modelMapper;
     private final ProductService productService;
 
     @Autowired
-    public ProductController(ModelMapper modelMapper, ProductService productService) {
-        this.modelMapper = modelMapper;
+    public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
     @GetMapping("/{id}")
     @PreAuthorize(HAS_ROLE_ADMIN_OR_USER)
-    public ResponseEntity<?> getProductById(
-            @PathVariable("id") String id) {
+    public ResponseEntity<?> getProductById(@PathVariable("id") String id) {
 
         try {
             /* Find product by id */
@@ -121,19 +116,17 @@ public class ProductController {
 
     @DeleteMapping("/remove/{id}")
     @PreAuthorize(HAS_ROLE_ADMIN)
-    public ResponseEntity<?> removeProduct(
-            @PathVariable("id") @Size(min = 1) String id,
-            BindingResult bindingResult) {
+    public ResponseEntity<?> removeProduct(@PathVariable("id") String id) {
 
         try {
-            /* Validate fields requirements */
-            if (bindingResult.hasErrors()) {
-                List<ObjectError> allErrors = bindingResult.getAllErrors();
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(allErrors);
+            /* Remove product by id */
+            int deletionResult = this.productService.removeById(id);
+
+            /* If no such a product */
+            if (deletionResult < 0) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(PRODUCT_NOT_FOUND);
             }
-
-
-            return ResponseEntity.status(HttpStatus.OK).body(null);
+            return ResponseEntity.status(HttpStatus.OK).body(PRODUCT_REMOVED);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

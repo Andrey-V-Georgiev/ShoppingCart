@@ -78,4 +78,16 @@ public class ProductServiceImpl implements ProductService {
 
         return this.modelMapper.map(productUpdated, ProductServiceModel.class);
     }
+
+    @Override
+    public int removeById(String id) {
+
+        /* Check product with this id exists */
+        Product checkExists = this.productRepository.findById(id).orElse(null);
+        if (checkExists == null) {
+            return -1;
+        }
+        this.productRepository.deleteById(id);
+        return 1;
+    }
 }

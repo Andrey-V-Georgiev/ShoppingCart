@@ -15,4 +15,5 @@ public class ResponseMsgConstants {
 
     public static final String PRODUCT_NOT_FOUND = "No such a product with this id";
     public static final String PRODUCTS_NOT_FOUND = "No products found";
+    public static final String PRODUCT_REMOVED = "Product was successfully removed";
 }
