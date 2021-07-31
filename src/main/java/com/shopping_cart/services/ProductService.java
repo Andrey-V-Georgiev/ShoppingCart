@@ -15,4 +15,5 @@ public interface ProductService {
 
     List<ProductServiceModel> findAll();
 
+    ProductServiceModel editProduct(String id, ProductBindingModel productBindingModel);
 }

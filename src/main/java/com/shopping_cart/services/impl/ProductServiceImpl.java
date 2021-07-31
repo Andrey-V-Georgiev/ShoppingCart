@@ -30,8 +30,8 @@ public class ProductServiceImpl implements ProductService {
     public ProductServiceModel addProduct(ProductBindingModel productBindingModel) {
 
         /* Prevent products with same names */
-        Product checkExist = this.productRepository.findProductByName(productBindingModel.getName()).orElse(null);
-        if(checkExist != null) {
+        Product checkExists = this.productRepository.findProductByName(productBindingModel.getName()).orElse(null);
+        if (checkExists != null) {
             return null;
         }
         /* Convert the binding model */
@@ -57,5 +57,25 @@ public class ProductServiceImpl implements ProductService {
                 .stream()
                 .map(o -> this.modelMapper.map(o, ProductServiceModel.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public ProductServiceModel editProduct(String id, ProductBindingModel productBindingModel) {
+
+        /* Check product with this id exists */
+        Product productOld = this.productRepository.findById(id).orElse(null);
+        if (productOld == null) {
+            return null;
+        }
+        /* Prepare for saving */
+        ProductServiceModel productServiceModel = this.modelMapper.map(productBindingModel, ProductServiceModel.class);
+        productServiceModel.setId(productOld.getId());
+        productServiceModel.setAddedOn(productOld.getAddedOn());
+
+        /* Save changes to DB */
+        Product productUpdated = this.productRepository
+                .saveAndFlush(this.modelMapper.map(productServiceModel, Product.class));
+
+        return this.modelMapper.map(productUpdated, ProductServiceModel.class);
     }
 }

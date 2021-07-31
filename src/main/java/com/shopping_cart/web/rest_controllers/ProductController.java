@@ -95,20 +95,25 @@ public class ProductController {
     @PutMapping("/edit/{id}")
     @PreAuthorize(HAS_ROLE_ADMIN)
     public ResponseEntity<?> editProduct(
-            @PathVariable("id") @Size(min = 1) String id,
-            BindingResult bindingResultPathVariable,
+            @PathVariable("id") String id,
             @Valid @RequestBody ProductBindingModel productBindingModel,
-            BindingResult bindingResultProductBindingModel) {
+            BindingResult bindingResult) {
 
         try {
-//            /* Validate fields requirements */
-//            if (bindingResult.hasErrors()) {
-//                List<ObjectError> allErrors = bindingResult.getAllErrors();
-//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(allErrors);
-//            }
+            /* Validate fields requirements */
+            if (bindingResult.hasErrors()) {
+                List<ObjectError> allErrors = bindingResult.getAllErrors();
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(allErrors);
+            }
+            /* Edit product */
+            ProductServiceModel productServiceModel = this.productService.editProduct(id, productBindingModel);
 
+            /* If no such a product */
+            if (productServiceModel == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(PRODUCT_NOT_FOUND);
+            }
 
-            return ResponseEntity.status(HttpStatus.OK).body(null);
+            return ResponseEntity.status(HttpStatus.OK).body(productServiceModel);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
