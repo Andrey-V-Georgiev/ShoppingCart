@@ -10,15 +10,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import java.util.List;
 
+import static com.shopping_cart.constants.ResponseMsgConstants.*;
 import static com.shopping_cart.constants.UserRoleConstants.*;
 
 
@@ -38,18 +37,17 @@ public class ProductController {
     @GetMapping("/{id}")
     @PreAuthorize(HAS_ROLE_ADMIN_OR_USER)
     public ResponseEntity<?> getProductById(
-            @PathVariable("id") @Size(min = 1) String id,
-            BindingResult bindingResult) {
+            @PathVariable("id") String id) {
 
         try {
-            /* Validate fields requirements */
-            if (bindingResult.hasErrors()) {
-                List<ObjectError> allErrors = bindingResult.getAllErrors();
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(allErrors);
+            /* Find product by id */
+            ProductServiceModel productServiceModel = this.productService.findById(id);
+
+            /* If no such a product */
+            if (productServiceModel == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(PRODUCT_NOT_FOUND);
             }
-
-
-            return ResponseEntity.status(HttpStatus.OK).body(null);
+            return ResponseEntity.status(HttpStatus.OK).body(productServiceModel);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

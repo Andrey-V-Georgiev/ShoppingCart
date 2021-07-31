@@ -12,4 +12,6 @@ public class ResponseMsgConstants {
     public static final String WRONG_USERNAME_OR_PASSWORD = "Wrong username or password";
     public static final String CONFIRMED_PASSWORD_NOT_MATCH = "Confirmed password doesn't match";
     public static final String USERNAME_ALREADY_IN_USE = "This username is already in use";
+
+    public static final String PRODUCT_NOT_FOUND = "No such a product with this id";
 }

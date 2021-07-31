@@ -41,4 +41,11 @@ public class ProductServiceImpl implements ProductService {
 
         return this.modelMapper.map(product, ProductServiceModel.class);
     }
+
+    @Override
+    public ProductServiceModel findById(String id) {
+        return this.productRepository.findById(id)
+                .map(o -> this.modelMapper.map(o, ProductServiceModel.class))
+                .orElse(null);
+    }
 }
