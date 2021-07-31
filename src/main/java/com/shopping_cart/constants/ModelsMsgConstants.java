@@ -2,6 +2,12 @@ package com.shopping_cart.constants;
 
 public class ModelsMsgConstants {
 
+    /* Id */
+
+    public static final String ID_NOT_EMPTY = "Id cannot be empty";
+    public static final String ID_NOT_NULL = "Id cannot be null";
+    public static final String ID_LENGTH = "Id length must be at least 3 symbols";
+
     /* CartProduct */
 
     public static final String ORDERED_QUANTITY_MUST_BE_AT_LEAST_ONE = "Ordered quantity must be at least one";

@@ -73,7 +73,7 @@ public class ProductController {
             BindingResult bindingResult) {
 
         try {
-            /* Validate fields requirements */
+            /* Validate input */
             if (bindingResult.hasErrors()) {
                 List<ObjectError> allErrors = bindingResult.getAllErrors();
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(allErrors);
@@ -95,7 +95,7 @@ public class ProductController {
             BindingResult bindingResult) {
 
         try {
-            /* Validate fields requirements */
+            /* Validate input */
             if (bindingResult.hasErrors()) {
                 List<ObjectError> allErrors = bindingResult.getAllErrors();
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(allErrors);

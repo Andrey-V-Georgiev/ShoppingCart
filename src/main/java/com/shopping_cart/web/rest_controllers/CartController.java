@@ -1,35 +1,43 @@
 package com.shopping_cart.web.rest_controllers;
 
+import com.shopping_cart.models.binding_models.CartAddBindingModel;
+import com.shopping_cart.models.service_models.ProductServiceModel;
+import com.shopping_cart.services.CartService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.Size;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+
+import java.security.Principal;
 import java.util.List;
 
+import static com.shopping_cart.constants.ResponseMsgConstants.PRODUCT_NOT_FOUND;
 import static com.shopping_cart.constants.UserRoleConstants.HAS_ROLE_ADMIN_OR_USER;
 
 @RestController
 @RequestMapping("/cart")
-@Validated
 public class CartController {
 
     private final ModelMapper modelMapper;
+    private final CartService cartService;
 
     @Autowired
-    public CartController(ModelMapper modelMapper) {
+    public CartController(ModelMapper modelMapper, CartService cartService) {
         this.modelMapper = modelMapper;
+        this.cartService = cartService;
     }
 
-    @GetMapping("/all")
+    @GetMapping("/")
     @PreAuthorize(HAS_ROLE_ADMIN_OR_USER)
-    public ResponseEntity<?> getAllCartProducts() {
+    public ResponseEntity<?> getCart() {
 
         try {
 
@@ -39,18 +47,28 @@ public class CartController {
         }
     }
 
-    @PutMapping("/add/{id}/{quantity}")
+    @PutMapping("/add")
     @PreAuthorize(HAS_ROLE_ADMIN_OR_USER)
     public ResponseEntity<?> addToCart(
-            @PathVariable("id") @Size(min = 1)  String productId,
-            BindingResult bindingResultProductId,
-            @PathVariable("quantity") @Size(min = 1) String productQuantity,
-            BindingResult bindingResultProductQuantity) {
+            @Valid @RequestBody CartAddBindingModel cartAddBindingModel,
+            BindingResult bindingResult ) {
 
+        String userId = String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         try {
+            /* Validate input */
+            if (bindingResult.hasErrors()) {
+                List<ObjectError> allErrors = bindingResult.getAllErrors();
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(allErrors);
+            }
+            /* Add the product to cart */
+            ProductServiceModel productServiceModel = this.cartService
+                    .addProductToCart(userId, cartAddBindingModel.getProductId(), cartAddBindingModel.getQuantity());
 
-
-            return ResponseEntity.status(HttpStatus.OK).body(null);
+            /* If no such a product */
+            if (productServiceModel == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(PRODUCT_NOT_FOUND);
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(productServiceModel);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
@@ -58,17 +76,9 @@ public class CartController {
 
     @DeleteMapping("/remove/{id}")
     @PreAuthorize(HAS_ROLE_ADMIN_OR_USER)
-    public ResponseEntity<?> removeProductFromCart(
-            @PathVariable("id") @Size(min = 1) String id,
-            BindingResult bindingResult) {
+    public ResponseEntity<?> removeProductFromCart(@PathVariable("id") String id) {
 
         try {
-            /* Validate fields requirements */
-            if (bindingResult.hasErrors()) {
-                List<ObjectError> allErrors = bindingResult.getAllErrors();
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(allErrors);
-            }
-
 
             return ResponseEntity.status(HttpStatus.OK).body(null);
         } catch (Exception e) {

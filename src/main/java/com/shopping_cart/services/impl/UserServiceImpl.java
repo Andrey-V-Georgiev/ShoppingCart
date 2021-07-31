@@ -1,8 +1,10 @@
 package com.shopping_cart.services.impl;
 
 import com.shopping_cart.models.binding_models.UserRegisterBindingModel;
+import com.shopping_cart.models.entities.Cart;
 import com.shopping_cart.models.entities.User;
 import com.shopping_cart.models.service_models.UserServiceModel;
+import com.shopping_cart.repositories.CartRepository;
 import com.shopping_cart.repositories.UserRepository;
 import com.shopping_cart.services.UserService;
 import org.modelmapper.ModelMapper;
@@ -23,12 +25,14 @@ public class UserServiceImpl implements UserService {
 
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
+    private final CartRepository cartRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserServiceImpl(ModelMapper modelMapper, UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(ModelMapper modelMapper, UserRepository userRepository, CartRepository cartRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.modelMapper = modelMapper;
         this.userRepository = userRepository;
+        this.cartRepository = cartRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
@@ -55,6 +59,10 @@ public class UserServiceImpl implements UserService {
         /* Save the user to DB */
         User userUnsaved = this.modelMapper.map(userServiceModelNew, User.class);
         User userSaved = this.userRepository.saveAndFlush(userUnsaved);
+
+        /* Create and attach new Cart to user */
+        Cart cart = new Cart(userSaved);
+        this.cartRepository.saveAndFlush(cart);
 
         return this.modelMapper.map(userSaved, UserServiceModel.class);
     }
