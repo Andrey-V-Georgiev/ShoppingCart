@@ -1,7 +1,5 @@
 package com.shopping_cart.models.entities;
 
-import org.hibernate.validator.constraints.Length;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -9,7 +7,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
-import static com.shopping_cart.constants.EntityMsgConstants.*;
+import static com.shopping_cart.constants.ModelsMsgConstants.*;
 
 @Entity
 @Table(name = "users")
@@ -62,7 +60,7 @@ public class User extends BaseEntity {
 
     @NotEmpty(message = PASSWORD_NOT_EMPTY)
     @NotNull(message = PASSWORD_NOT_NULL)
-    @Size(min = 3, max = 500, message =  PASSWORD_LENGTH)
+    @Size(min = 3, message =  PASSWORD_LENGTH)
     @Column(name = "password")
     public String getPassword() {
         return password;

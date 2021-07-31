@@ -1,6 +1,13 @@
 package com.shopping_cart.models.binding_models;
 
-import org.hibernate.validator.constraints.Length;
+
+import javax.persistence.Column;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import static com.shopping_cart.constants.ModelsMsgConstants.*;
 
 public class UserRegisterBindingModel {
 
@@ -19,6 +26,9 @@ public class UserRegisterBindingModel {
         this.confirmPassword = confirmPassword;
     }
 
+    @NotEmpty(message = USERNAME_NOT_EMPTY)
+    @NotNull(message = USERNAME_NOT_NULL)
+    @Size(min = 3, max = 50, message = USERNAME_LENGTH)
     public String getUsername() {
         return username;
     }
@@ -27,6 +37,9 @@ public class UserRegisterBindingModel {
         this.username = username;
     }
 
+    @NotEmpty(message = USER_EMAIL_NOT_EMPTY)
+    @NotNull(message = USER_EMAIL_NOT_NULL)
+    @Pattern(regexp = USER_EMAIL_REGEX, message = USER_EMAIL_REGEX_MSG)
     public String getEmail() {
         return email;
     }
@@ -35,6 +48,9 @@ public class UserRegisterBindingModel {
         this.email = email;
     }
 
+    @NotEmpty(message = PASSWORD_NOT_EMPTY)
+    @NotNull(message = PASSWORD_NOT_NULL)
+    @Size(min = 3, message =  PASSWORD_LENGTH)
     public String getPassword() {
         return password;
     }

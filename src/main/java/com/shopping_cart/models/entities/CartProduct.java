@@ -7,7 +7,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
-import static com.shopping_cart.constants.EntityMsgConstants.*;
+import static com.shopping_cart.constants.ModelsMsgConstants.*;
 
 @Entity
 @Table(name = "cart_products")

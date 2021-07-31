@@ -1,8 +1,6 @@
 package com.shopping_cart.constants;
 
-public class EntityMsgConstants {
-
-    /* BlackToken */
+public class ModelsMsgConstants {
 
     /* CartProduct */
 
@@ -35,11 +33,11 @@ public class EntityMsgConstants {
 
     public static final String PASSWORD_NOT_EMPTY = "Password cannot be empty field";
     public static final String PASSWORD_NOT_NULL = "Password cannot be null";
-    public static final String PASSWORD_LENGTH = "Password must be between 3 and 500 symbols";
+    public static final String PASSWORD_LENGTH = "Password must be at least 3 symbols";
 
     public static final String TOKEN_NOT_EMPTY = "Token cannot be empty field";
     public static final String TOKEN_NOT_NULL = "Token cannot be null";
-    public static final String TOKEN_LENGTH = "Token must be at least 3 and 50 symbols";
+    public static final String TOKEN_LENGTH = "Token must be at least 3 symbols";
 
     public static final String USER_ROLE_NOT_EMPTY = "User role cannot be empty field";
     public static final String USER_ROLE_NOT_NULL = "User role cannot be null";

@@ -1,14 +1,12 @@
 package com.shopping_cart.models.entities;
 
-import org.hibernate.validator.constraints.Length;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
-import static com.shopping_cart.constants.EntityMsgConstants.*;
+import static com.shopping_cart.constants.ModelsMsgConstants.*;
 
 @Entity
 @Table(name = "black_tokens")
