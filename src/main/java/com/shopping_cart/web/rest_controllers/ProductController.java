@@ -55,12 +55,17 @@ public class ProductController {
 
     @GetMapping("/all")
     @PreAuthorize(HAS_ROLE_ADMIN_OR_USER)
-    public ResponseEntity<?> getAllProduct(
-            Authentication authentication) {
+    public ResponseEntity<?> getAllProduct() {
 
         try {
+            /* Find all products */
+            List<ProductServiceModel> productServiceModelAll = this.productService.findAll();
 
-            return ResponseEntity.status(HttpStatus.OK).body(null);
+            /* If no such a product */
+            if (productServiceModelAll.size() == 0) {
+                return ResponseEntity.status(HttpStatus.OK).body(PRODUCTS_NOT_FOUND);
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(productServiceModelAll);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

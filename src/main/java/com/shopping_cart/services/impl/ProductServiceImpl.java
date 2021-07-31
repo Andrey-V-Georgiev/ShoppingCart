@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -47,5 +49,13 @@ public class ProductServiceImpl implements ProductService {
         return this.productRepository.findById(id)
                 .map(o -> this.modelMapper.map(o, ProductServiceModel.class))
                 .orElse(null);
+    }
+
+    @Override
+    public List<ProductServiceModel> findAll() {
+        return this.productRepository.findAll()
+                .stream()
+                .map(o -> this.modelMapper.map(o, ProductServiceModel.class))
+                .collect(Collectors.toList());
     }
 }
