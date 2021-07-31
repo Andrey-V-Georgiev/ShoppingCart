@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,6 @@ import static com.shopping_cart.constants.UserRoleConstants.*;
 
 @RestController
 @RequestMapping("/product")
-@Validated
 public class ProductController {
 
     private final ModelMapper modelMapper;
