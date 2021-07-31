@@ -15,17 +15,25 @@ import static com.shopping_cart.constants.EntityMsgConstants.*;
 public class User extends BaseEntity {
 
     private String username;
+    private Cart cart;
     private String email;
     private String password;
     private String token;
     private String role;
     private LocalDateTime registrationDate;
-    private Cart cart;
 
     public User() {
         super();
     }
 
+    @OneToOne(targetEntity=Cart.class,cascade=CascadeType.ALL)
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
 
     @NotEmpty(message = USERNAME_NOT_EMPTY)
     @NotNull(message = USERNAME_NOT_NULL)
@@ -87,21 +95,12 @@ public class User extends BaseEntity {
         this.role = role;
     }
 
+    @Column(name = "registration_date", nullable = false)
     public LocalDateTime getRegistrationDate() {
         return registrationDate;
     }
 
     public void setRegistrationDate(LocalDateTime addDate) {
         this.registrationDate = addDate;
-    }
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id")
-    public Cart getCart() {
-        return cart;
-    }
-
-    public void setCart(Cart cart) {
-        this.cart = cart;
     }
 }

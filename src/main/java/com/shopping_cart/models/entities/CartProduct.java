@@ -13,7 +13,6 @@ import static com.shopping_cart.constants.EntityMsgConstants.*;
 @Table(name = "cart_products")
 public class CartProduct extends BaseEntity  {
 
-    private Cart cart;
     private Product product;
     private Integer quantity;
     private BigDecimal totalPrice;
@@ -22,17 +21,7 @@ public class CartProduct extends BaseEntity  {
     public CartProduct() {
     }
 
-    @ManyToOne
-    public Cart getCart() {
-        return cart;
-    }
-
-    public void setCart(Cart cart) {
-        this.cart = cart;
-    }
-
-    @OneToOne
-    @JoinColumn(name="product_id")
+    @OneToOne(targetEntity=Product.class,cascade=CascadeType.ALL)
     public Product getProduct() {
         return product;
     }

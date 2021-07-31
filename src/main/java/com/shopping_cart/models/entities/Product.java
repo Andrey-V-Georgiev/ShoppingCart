@@ -60,6 +60,7 @@ public class Product extends BaseEntity {
         this.price = price;
     }
 
+    @Column(name = "added_on", nullable = false)
     public LocalDateTime getAddedOn() {
         return addedOn;
     }

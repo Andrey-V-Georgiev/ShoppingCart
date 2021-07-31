@@ -2,9 +2,7 @@ package com.shopping_cart.models.entities;
 
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -15,31 +13,25 @@ import static com.shopping_cart.constants.EntityMsgConstants.*;
 @Table(name = "black_tokens")
 public class BlackToken extends BaseEntity {
 
-    private String userId;
+    private User user;
     private String token;
-    private LocalDateTime addDate;
+    private LocalDateTime addedOn;
 
     public BlackToken() {
     }
 
-    public BlackToken(String userId, String token, LocalDateTime addDate) {
-        this.userId = userId;
-        this.token = token;
-        this.addDate = addDate;
+    @ManyToOne(cascade= CascadeType.ALL)
+    public User getUser() {
+        return user;
     }
 
-    @Column(name = "user_id", nullable = false)
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @NotEmpty(message = TOKEN_NOT_EMPTY)
     @NotNull(message = TOKEN_NOT_NULL)
-    @Length(min = 3, message =  TOKEN_LENGTH)
+    @Length(min = 3, message = TOKEN_LENGTH)
     @Column(name = "token", columnDefinition="TEXT")
     public String getToken() {
         return token;
@@ -49,11 +41,12 @@ public class BlackToken extends BaseEntity {
         this.token = token;
     }
 
-    public LocalDateTime getAddDate() {
-        return addDate;
+    @Column(name = "added_on", nullable = false)
+    public LocalDateTime getAddedOn() {
+        return addedOn;
     }
 
-    public void setAddDate(LocalDateTime addDate) {
-        this.addDate = addDate;
+    public void setAddedOn(LocalDateTime addedOn) {
+        this.addedOn = addedOn;
     }
 }

@@ -12,7 +12,7 @@ public class CartServiceModel extends BaseEntity {
     private BigDecimal totalPriceProducts;
     private BigDecimal totalPriceAfterQuantityDiscount;
     private BigDecimal totalPriceAfterAllSumDiscount;
-    private BigDecimal finalDiscountInPercent;
+    private Double finalDiscountInPercent;
     private BigDecimal finalDiscountInMoney;
 
     public CartServiceModel() {
@@ -58,11 +58,11 @@ public class CartServiceModel extends BaseEntity {
         this.totalPriceAfterAllSumDiscount = totalPriceAfterAllSumDiscount;
     }
 
-    public BigDecimal getFinalDiscountInPercent() {
+    public Double getFinalDiscountInPercent() {
         return finalDiscountInPercent;
     }
 
-    public void setFinalDiscountInPercent(BigDecimal finalDiscountInPercent) {
+    public void setFinalDiscountInPercent(Double finalDiscountInPercent) {
         this.finalDiscountInPercent = finalDiscountInPercent;
     }
 
