@@ -1,6 +1,8 @@
 package com.shopping_cart.web.rest_controllers;
 
 import com.shopping_cart.models.binding_models.ProductBindingModel;
+import com.shopping_cart.models.service_models.ProductServiceModel;
+import com.shopping_cart.services.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,23 +27,12 @@ import static com.shopping_cart.constants.UserRoleConstants.*;
 public class ProductController {
 
     private final ModelMapper modelMapper;
+    private final ProductService productService;
 
     @Autowired
-    public ProductController(ModelMapper modelMapper) {
+    public ProductController(ModelMapper modelMapper, ProductService productService) {
         this.modelMapper = modelMapper;
-    }
-
-    @GetMapping("/all")
-    @PreAuthorize(HAS_ROLE_ADMIN_OR_USER)
-    public ResponseEntity<?> getAllProduct(
-            Authentication authentication) {
-
-        try {
-
-            return ResponseEntity.status(HttpStatus.OK).body(null);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
+        this.productService = productService;
     }
 
     @GetMapping("/{id}")
@@ -56,6 +47,20 @@ public class ProductController {
                 List<ObjectError> allErrors = bindingResult.getAllErrors();
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(allErrors);
             }
+
+
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/all")
+    @PreAuthorize(HAS_ROLE_ADMIN_OR_USER)
+    public ResponseEntity<?> getAllProduct(
+            Authentication authentication) {
+
+        try {
 
             return ResponseEntity.status(HttpStatus.OK).body(null);
         } catch (Exception e) {
@@ -75,9 +80,10 @@ public class ProductController {
                 List<ObjectError> allErrors = bindingResult.getAllErrors();
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(allErrors);
             }
+            /* Create new product */
+            ProductServiceModel productServiceModel = this.productService.addProduct(productBindingModel);
 
-
-            return ResponseEntity.status(HttpStatus.OK).body(null);
+            return ResponseEntity.status(HttpStatus.CREATED).body(productServiceModel);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
