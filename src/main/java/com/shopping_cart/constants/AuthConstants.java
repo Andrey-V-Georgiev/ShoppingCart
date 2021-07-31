@@ -8,4 +8,5 @@ public class AuthConstants {
     public static final Long TOKEN_EXPIRY_TIME = 6000000L;
     public static final String CLAIMS_JTI = "jti";
     public static final String CLAIMS_AUTHORITIES = "authorities";
+    public static final String ANONYMOUS_USER = "anonymousUser";
 }

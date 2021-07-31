@@ -27,9 +27,10 @@ public class AuthInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         String userId = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        boolean userIdIsValid = !userId.equals(ANONYMOUS_USER);
         boolean hasAuthorizationHeader = request.getHeader(AUTHORIZATION_HEADER) != null;
 
-        if (hasAuthorizationHeader) {
+        if (userIdIsValid && hasAuthorizationHeader) {
 
             /* Get the user */
             UserServiceModel userServiceModel = this.userService.findUserById(userId);
@@ -55,8 +56,11 @@ public class AuthInterceptor implements HandlerInterceptor {
                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
                 return false;
             }
+
+            /* If everything is fine let the request forward */
+            return true;
         }
-        /* If everything is fine let the request forward */
+        /* If no hasUserId or hasAuthorizationHeader (register and guest) */
         return true;
     }
 }
