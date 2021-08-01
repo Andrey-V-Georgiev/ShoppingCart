@@ -3,7 +3,7 @@ package com.shopping_cart.web.rest_controllers;
 import com.shopping_cart.models.binding_models.UserLoginBindingModel;
 import com.shopping_cart.models.binding_models.UserRegisterBindingModel;
 import com.shopping_cart.models.service_models.UserServiceModel;
-import com.shopping_cart.models.view_models.UserLoginViewModel;
+import com.shopping_cart.models.view_models.UserViewModel;
 import com.shopping_cart.services.AuthService;
 import com.shopping_cart.services.UserService;
 import org.modelmapper.ModelMapper;
@@ -92,10 +92,10 @@ public class AuthController {
 
 
             /* Prepare UserLoginViewModel for FE */
-            UserLoginViewModel userLoginViewModel = this.modelMapper.map(userServiceModel, UserLoginViewModel.class);
-            userLoginViewModel.setToken(newToken);
+            UserViewModel userViewModel = this.modelMapper.map(userServiceModel, UserViewModel.class);
+            userViewModel.setToken(newToken);
 
-            return ResponseEntity.status(HttpStatus.OK).body(userLoginViewModel);
+            return ResponseEntity.status(HttpStatus.OK).body(userViewModel);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

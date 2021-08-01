@@ -31,6 +31,12 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    public CartServiceModel findByUserId(String userId) {
+        return this.cartRepository.findCartByUserId(userId)
+                .map(o -> this.modelMapper.map(o, CartServiceModel.class)).orElse(null);
+    }
+
+    @Override
     public ProductServiceModel addProductToCart(String userId, String productId, int quantity) {
 
         /* Check product with this id exists */

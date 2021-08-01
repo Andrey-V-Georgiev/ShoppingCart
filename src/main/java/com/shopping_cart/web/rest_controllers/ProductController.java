@@ -3,7 +3,6 @@ package com.shopping_cart.web.rest_controllers;
 import com.shopping_cart.models.binding_models.ProductBindingModel;
 import com.shopping_cart.models.service_models.ProductServiceModel;
 import com.shopping_cart.services.ProductService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +31,7 @@ public class ProductController {
 
     @GetMapping("/{id}")
     @PreAuthorize(HAS_ROLE_ADMIN_OR_USER)
-    public ResponseEntity<?> getProductById(@PathVariable("id") String id) {
+    public ResponseEntity<?> findProductById(@PathVariable("id") String id) {
 
         try {
             /* Find product by id */
@@ -50,7 +49,7 @@ public class ProductController {
 
     @GetMapping("/all")
     @PreAuthorize(HAS_ROLE_ADMIN_OR_USER)
-    public ResponseEntity<?> getAllProduct() {
+    public ResponseEntity<?> findAllProduct() {
 
         try {
             /* Find all products */
@@ -58,7 +57,7 @@ public class ProductController {
 
             /* If no such a product */
             if (productServiceModelAll.size() == 0) {
-                return ResponseEntity.status(HttpStatus.OK).body(PRODUCTS_NOT_FOUND);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(PRODUCTS_NOT_FOUND);
             }
             return ResponseEntity.status(HttpStatus.OK).body(productServiceModelAll);
         } catch (Exception e) {
@@ -83,7 +82,7 @@ public class ProductController {
 
             /* If product already exists */
             if (productServiceModel == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(PRODUCT_ALREADY_EXISTS);
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(PRODUCT_ALREADY_EXISTS);
             }
             return ResponseEntity.status(HttpStatus.CREATED).body(productServiceModel);
         } catch (Exception e) {

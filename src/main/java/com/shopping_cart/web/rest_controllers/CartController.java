@@ -1,7 +1,9 @@
 package com.shopping_cart.web.rest_controllers;
 
 import com.shopping_cart.models.binding_models.CartAddBindingModel;
+import com.shopping_cart.models.service_models.CartServiceModel;
 import com.shopping_cart.models.service_models.ProductServiceModel;
+import com.shopping_cart.models.view_models.CartViewModel;
 import com.shopping_cart.services.CartService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +15,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import java.security.Principal;
 import java.util.List;
 
-import static com.shopping_cart.constants.ResponseMsgConstants.PRODUCT_NOT_FOUND;
+import static com.shopping_cart.constants.ResponseMsgConstants.*;
 import static com.shopping_cart.constants.UserRoleConstants.HAS_ROLE_ADMIN_OR_USER;
 
 @RestController
@@ -37,11 +37,21 @@ public class CartController {
 
     @GetMapping("/")
     @PreAuthorize(HAS_ROLE_ADMIN_OR_USER)
-    public ResponseEntity<?> getCart() {
+    public ResponseEntity<?> findCart() {
 
+        String userId = String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         try {
+            /* Find cart */
+            CartServiceModel cartServiceModel = this.cartService.findByUserId(userId);
 
-            return ResponseEntity.status(HttpStatus.OK).body(null);
+            /* If cannot find cart */
+            if (cartServiceModel == null) {
+                return ResponseEntity.status(HttpStatus.OK).body(CART_NOT_FOUND);
+            }
+            /* Return only necessary fields */
+            CartViewModel cartViewModel = this.modelMapper.map(cartServiceModel, CartViewModel.class);
+
+            return ResponseEntity.status(HttpStatus.OK).body(cartViewModel);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

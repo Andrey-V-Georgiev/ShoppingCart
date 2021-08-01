@@ -17,4 +17,6 @@ public class ResponseMsgConstants {
     public static final String PRODUCT_ALREADY_EXISTS = "Product with the same name already exists";
     public static final String PRODUCTS_NOT_FOUND = "No products found";
     public static final String PRODUCT_REMOVED = "Product was successfully removed";
+
+    public static final String CART_NOT_FOUND = "Cart not found";
 }

@@ -22,6 +22,13 @@ public class CartProductServiceImpl implements CartProductService {
     }
 
     @Override
+    public CartProductServiceModel findByProductId(String productId) {
+        return this.cartProductRepository
+                .findCartProductByProductId(productId)
+                .map(o -> this.modelMapper.map(o, CartProductServiceModel.class)).orElse(null);
+    }
+
+    @Override
     public CartProductServiceModel createCartProduct(ProductServiceModel productServiceModel, int quantity) {
 
         /* Create new and set the fields */
@@ -35,13 +42,6 @@ public class CartProductServiceImpl implements CartProductService {
                 .saveAndFlush(this.modelMapper.map(cartProductServiceModel, CartProduct.class));
 
         return this.modelMapper.map(cartProductSaved, CartProductServiceModel.class);
-    }
-
-    @Override
-    public CartProductServiceModel findByProductId(String productId) {
-        return this.cartProductRepository
-                .findCartProductByProductId(productId)
-                .map(o -> this.modelMapper.map(o, CartProductServiceModel.class)).orElse(null);
     }
 
     @Override

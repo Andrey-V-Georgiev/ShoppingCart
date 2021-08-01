@@ -27,6 +27,21 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ProductServiceModel findById(String id) {
+        return this.productRepository.findById(id)
+                .map(o -> this.modelMapper.map(o, ProductServiceModel.class))
+                .orElse(null);
+    }
+
+    @Override
+    public List<ProductServiceModel> findAll() {
+        return this.productRepository.findAll()
+                .stream()
+                .map(o -> this.modelMapper.map(o, ProductServiceModel.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public ProductServiceModel addProduct(ProductBindingModel productBindingModel) {
 
         /* Prevent products with same names */
@@ -42,21 +57,6 @@ public class ProductServiceImpl implements ProductService {
         Product product = this.productRepository.saveAndFlush(this.modelMapper.map(productServiceModel, Product.class));
 
         return this.modelMapper.map(product, ProductServiceModel.class);
-    }
-
-    @Override
-    public ProductServiceModel findById(String id) {
-        return this.productRepository.findById(id)
-                .map(o -> this.modelMapper.map(o, ProductServiceModel.class))
-                .orElse(null);
-    }
-
-    @Override
-    public List<ProductServiceModel> findAll() {
-        return this.productRepository.findAll()
-                .stream()
-                .map(o -> this.modelMapper.map(o, ProductServiceModel.class))
-                .collect(Collectors.toList());
     }
 
     @Override
