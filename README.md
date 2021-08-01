@@ -15,4 +15,4 @@ This is a Spring Boot application, using Java 11 and MySQL for database;
 
 ## Postman
 
-Zip archive named "ShoppingCartSpring.postman_collection" is included;
+Zip archive named "ShoppingCartSpring.postman.zip" is included;
