@@ -7,15 +7,15 @@ import javax.validation.constraints.Size;
 
 import static com.shopping_cart.constants.ModelsMsgConstants.*;
 
-public class CartAddBindingModel {
+public class CartBindingModel {
 
     private String productId;
     private int quantity;
 
-    public CartAddBindingModel() {
+    public CartBindingModel() {
     }
 
-    public CartAddBindingModel(String productId, int quantity) {
+    public CartBindingModel(String productId, int quantity) {
         this.productId = productId;
         this.quantity = quantity;
     }
@@ -32,7 +32,7 @@ public class CartAddBindingModel {
     }
 
     @NotNull(message = ORDERED_QUANTITY_NOT_NULL)
-    @Min(value = 1 , message = ORDERED_QUANTITY_MUST_BE_AT_LEAST_ONE)
+    @Min(value = 0 , message = ORDERED_QUANTITY_CANNOT_BE_NEGATIVE)
     public int getQuantity() {
         return quantity;
     }

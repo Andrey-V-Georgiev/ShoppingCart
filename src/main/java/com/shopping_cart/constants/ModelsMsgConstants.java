@@ -10,7 +10,7 @@ public class ModelsMsgConstants {
 
     /* CartProduct */
 
-    public static final String ORDERED_QUANTITY_MUST_BE_AT_LEAST_ONE = "Ordered quantity must be at least one";
+    public static final String ORDERED_QUANTITY_CANNOT_BE_NEGATIVE = "Ordered quantity cannot be negative number";
     public static final String ORDERED_QUANTITY_NOT_NULL = "Ordered quantity cannot be null";
 
     /* Product */

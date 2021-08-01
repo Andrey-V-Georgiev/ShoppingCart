@@ -11,4 +11,5 @@ public interface CartProductService {
 
     CartProductServiceModel persistCartProduct(CartProductServiceModel cartProductServiceModel);
 
+    void removeById(String id);
 }

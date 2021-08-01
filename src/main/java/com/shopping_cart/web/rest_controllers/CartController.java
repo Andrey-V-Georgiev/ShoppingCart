@@ -1,6 +1,7 @@
 package com.shopping_cart.web.rest_controllers;
 
-import com.shopping_cart.models.binding_models.CartAddBindingModel;
+import com.shopping_cart.enums.RemoveProductFromCart;
+import com.shopping_cart.models.binding_models.CartBindingModel;
 import com.shopping_cart.models.service_models.CartServiceModel;
 import com.shopping_cart.models.service_models.ProductServiceModel;
 import com.shopping_cart.models.view_models.CartViewModel;
@@ -16,7 +17,6 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
 import java.util.List;
 
 import static com.shopping_cart.constants.ResponseMsgConstants.*;
@@ -60,8 +60,8 @@ public class CartController {
     @PutMapping("/add")
     @PreAuthorize(HAS_ROLE_ADMIN_OR_USER)
     public ResponseEntity<?> addToCart(
-            @Valid @RequestBody CartAddBindingModel cartAddBindingModel,
-            BindingResult bindingResult ) {
+            @Valid @RequestBody CartBindingModel cartBindingModel,
+            BindingResult bindingResult) {
 
         String userId = String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         try {
@@ -72,7 +72,7 @@ public class CartController {
             }
             /* Add the product to cart */
             ProductServiceModel productServiceModel = this.cartService
-                    .addProductToCart(userId, cartAddBindingModel.getProductId(), cartAddBindingModel.getQuantity());
+                    .addProductToCart(userId, cartBindingModel.getProductId(), cartBindingModel.getQuantity());
 
             /* If no such a product */
             if (productServiceModel == null) {
@@ -84,22 +84,46 @@ public class CartController {
         }
     }
 
-    @DeleteMapping("/remove/{id}")
+    @DeleteMapping("/remove")
     @PreAuthorize(HAS_ROLE_ADMIN_OR_USER)
-    public ResponseEntity<?> removeProductFromCart(@PathVariable("id") String id) {
+    public ResponseEntity<?> removeProductFromCart(
+            @Valid @RequestBody CartBindingModel cartBindingModel,
+            BindingResult bindingResult) {
 
+        String userId = String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         try {
+            /* Validate input */
+            if (bindingResult.hasErrors()) {
+                List<ObjectError> allErrors = bindingResult.getAllErrors();
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(allErrors);
+            }
+            /* Remove product by id */
+            RemoveProductFromCart deletionResult = this.cartService
+                    .removeProduct(cartBindingModel.getProductId(), userId, cartBindingModel.getQuantity());
 
-            return ResponseEntity.status(HttpStatus.OK).body(null);
+            switch (deletionResult) {
+                case PRODUCT_NOT_FOUND:
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(NO_SUCH_PRODUCT_IN_CART);
+
+                case QUANTITY_MORE_THAN_AVAILABLE:
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(QUANTITY_MORE_THAN_AVAILABLE);
+
+                case PRODUCT_QUANTITY_DECREASED:
+                    return ResponseEntity.status(HttpStatus.OK).body(PRODUCT_QUANTITY_DECREASED);
+
+                default:
+                    return ResponseEntity.status(HttpStatus.OK).body(PRODUCT_REMOVED_FROM_CART);
+            }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
-    @DeleteMapping("/clear")
+    @DeleteMapping("/empty")
     @PreAuthorize(HAS_ROLE_ADMIN_OR_USER)
     public ResponseEntity<?> clearAllProducts() {
 
+        String userId = String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         try {
 
             return ResponseEntity.status(HttpStatus.OK).body(null);

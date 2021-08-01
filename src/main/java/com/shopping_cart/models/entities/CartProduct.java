@@ -31,7 +31,7 @@ public class CartProduct extends BaseEntity  {
     }
 
     @NotNull(message = ORDERED_QUANTITY_NOT_NULL)
-    @Min(value = 1 , message = ORDERED_QUANTITY_MUST_BE_AT_LEAST_ONE)
+    @Min(value = 0 , message = ORDERED_QUANTITY_CANNOT_BE_NEGATIVE)
     public Integer getQuantity() {
         return quantity;
     }

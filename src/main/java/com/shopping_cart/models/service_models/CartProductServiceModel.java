@@ -29,6 +29,14 @@ public class CartProductServiceModel extends BaseEntity {
         this.quantity += quantity;
     }
 
+    public boolean decreaseQuantity(Integer quantity) {
+        if (this.quantity >= quantity) {
+            this.quantity -= quantity;
+            return true;
+        }
+        return false;
+    }
+
     public CartProductServiceModel() {
     }
 

@@ -50,4 +50,9 @@ public class CartProductServiceImpl implements CartProductService {
                 .saveAndFlush(this.modelMapper.map(cartProductServiceModel, CartProduct.class));
         return this.modelMapper.map(cartProductSaved, CartProductServiceModel.class);
     }
+
+    @Override
+    public void removeById(String id) {
+        this.cartProductRepository.deleteById(id);
+    }
 }
