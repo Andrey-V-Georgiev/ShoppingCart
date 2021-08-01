@@ -12,20 +12,23 @@ import static com.shopping_cart.constants.ModelsMsgConstants.*;
 @Table(name = "black_tokens")
 public class BlackToken extends BaseEntity {
 
-    private User user;
+    private String userId;
     private String token;
     private LocalDateTime addedOn;
 
     public BlackToken() {
     }
 
-    @ManyToOne(cascade= CascadeType.ALL)
-    public User getUser() {
-        return user;
+    @NotEmpty(message = ID_NOT_EMPTY)
+    @NotNull(message = ID_NOT_NULL)
+    @Size(min = 3, message = ID_LENGTH)
+    @Column(name = "user_id")
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     @NotEmpty(message = TOKEN_NOT_EMPTY)

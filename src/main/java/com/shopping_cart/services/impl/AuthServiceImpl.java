@@ -12,6 +12,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -57,14 +59,16 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public BlackTokenServiceModel createBlackToken(String userId, String token) {
 
         /* Create new service model */
         BlackTokenServiceModel blackTokenServiceModel = new BlackTokenServiceModel(userId, token);
+        blackTokenServiceModel.setAddedOn(LocalDateTime.now());
 
         /* Map the service model to entity and save it to DB */
-        BlackToken blackToken = this.blackTokenRepository.saveAndFlush(
-                this.modelMapper.map(blackTokenServiceModel, BlackToken.class));
+        BlackToken blackToken = this.blackTokenRepository
+                .saveAndFlush(this.modelMapper.map(blackTokenServiceModel, BlackToken.class));
 
         return this.modelMapper.map(blackToken, BlackTokenServiceModel.class);
     }

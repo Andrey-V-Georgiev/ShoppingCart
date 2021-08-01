@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
@@ -103,11 +104,10 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout(
-            Principal principal,
             @RequestHeader(name = "Authorization") String token) {
 
         try {
-            String userId = principal.getName();
+            String userId = String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
             String nakedToken = token.replace(AUTHORIZATION_PREFIX, "");
 
             /* Invalidate the current token , saving it to the blackList */
@@ -116,8 +116,8 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.OK).body(LOGOUT_SUCCESS);
 
         } catch (Exception e) {
-            /* If the user logout from other device with old token, the old token won't be added to DB second time */
-            return ResponseEntity.status(HttpStatus.OK).body(LOGOUT_SUCCESS);
+            /* The security will throw 401 before getting here */
+            return ResponseEntity.status(HttpStatus.OK).body(ALREADY_LOGGED_OUT);
         }
     }
 }

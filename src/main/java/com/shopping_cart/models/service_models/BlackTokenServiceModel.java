@@ -6,7 +6,7 @@ public class BlackTokenServiceModel extends BaseServiceModel {
 
     private String userId;
     private String token;
-    private LocalDateTime addDate;
+    private LocalDateTime addedOn;
 
     public BlackTokenServiceModel() {
     }
@@ -14,7 +14,6 @@ public class BlackTokenServiceModel extends BaseServiceModel {
     public BlackTokenServiceModel(String userId, String token) {
         this.userId = userId;
         this.token = token;
-        this.addDate = LocalDateTime.now();
     }
 
     public String getUserId() {
@@ -33,11 +32,11 @@ public class BlackTokenServiceModel extends BaseServiceModel {
         this.token = token;
     }
 
-    public LocalDateTime getAddDate() {
-        return addDate;
+    public LocalDateTime getAddedOn() {
+        return addedOn;
     }
 
-    public void setAddDate(LocalDateTime addDate) {
-        this.addDate = addDate;
+    public void setAddedOn(LocalDateTime addedOn) {
+        this.addedOn = addedOn;
     }
 }
