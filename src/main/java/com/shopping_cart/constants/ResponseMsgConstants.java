@@ -14,6 +14,7 @@ public class ResponseMsgConstants {
     public static final String USERNAME_ALREADY_IN_USE = "This username is already in use";
 
     public static final String PRODUCT_NOT_FOUND = "No such a product with this id";
+    public static final String PRODUCT_ALREADY_EXISTS = "Product with the same name already exists";
     public static final String PRODUCTS_NOT_FOUND = "No products found";
     public static final String PRODUCT_REMOVED = "Product was successfully removed";
 }

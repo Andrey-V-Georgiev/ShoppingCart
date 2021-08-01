@@ -81,6 +81,10 @@ public class ProductController {
             /* Create new product */
             ProductServiceModel productServiceModel = this.productService.addProduct(productBindingModel);
 
+            /* If product already exists */
+            if (productServiceModel == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(PRODUCT_ALREADY_EXISTS);
+            }
             return ResponseEntity.status(HttpStatus.CREATED).body(productServiceModel);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
