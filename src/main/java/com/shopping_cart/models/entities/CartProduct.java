@@ -1,6 +1,5 @@
 package com.shopping_cart.models.entities;
 
-
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;

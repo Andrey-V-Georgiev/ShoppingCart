@@ -17,7 +17,6 @@ import java.util.List;
 import static com.shopping_cart.constants.ResponseMsgConstants.*;
 import static com.shopping_cart.constants.UserRoleConstants.*;
 
-
 @RestController
 @RequestMapping("/product")
 public class ProductController {

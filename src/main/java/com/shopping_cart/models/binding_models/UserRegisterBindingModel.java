@@ -1,6 +1,5 @@
 package com.shopping_cart.models.binding_models;
 
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;

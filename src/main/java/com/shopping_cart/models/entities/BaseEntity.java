@@ -1,6 +1,5 @@
 package com.shopping_cart.models.entities;
 
-
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;

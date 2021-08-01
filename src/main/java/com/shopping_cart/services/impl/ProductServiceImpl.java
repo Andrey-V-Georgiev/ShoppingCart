@@ -1,6 +1,5 @@
 package com.shopping_cart.services.impl;
 
-
 import com.shopping_cart.models.binding_models.ProductBindingModel;
 import com.shopping_cart.models.entities.Product;
 import com.shopping_cart.models.service_models.ProductServiceModel;

@@ -1,6 +1,5 @@
 package com.shopping_cart.models.service_models;
 
-
 import java.time.LocalDateTime;
 
 public class UserServiceModel extends BaseServiceModel {
