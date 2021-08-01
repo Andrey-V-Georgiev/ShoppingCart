@@ -3,10 +3,9 @@ package com.shopping_cart.services.impl;
 import com.shopping_cart.models.entities.Cart;
 import com.shopping_cart.models.entities.CartProduct;
 import com.shopping_cart.models.service_models.CartProductServiceModel;
-import com.shopping_cart.models.service_models.CartServiceModel;
 import com.shopping_cart.models.service_models.ProductServiceModel;
-import com.shopping_cart.repositories.CartProductRepository;
 import com.shopping_cart.repositories.CartRepository;
+import com.shopping_cart.services.CartProductService;
 import com.shopping_cart.services.CartService;
 import com.shopping_cart.services.ProductService;
 import org.modelmapper.ModelMapper;
@@ -14,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Map;
-import java.util.Objects;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -23,14 +20,14 @@ public class CartServiceImpl implements CartService {
     private final ModelMapper modelMapper;
     private final CartRepository cartRepository;
     private final ProductService productService;
-    private final CartProductRepository cartProductRepository;
+    private final CartProductService cartProductService;
 
     @Autowired
-    public CartServiceImpl(ModelMapper modelMapper, CartRepository cartRepository, ProductService productService, CartProductRepository cartProductRepository) {
+    public CartServiceImpl(ModelMapper modelMapper, CartRepository cartRepository, ProductService productService, CartProductService cartProductService) {
         this.modelMapper = modelMapper;
         this.cartRepository = cartRepository;
         this.productService = productService;
-        this.cartProductRepository = cartProductRepository;
+        this.cartProductService = cartProductService;
     }
 
 
@@ -42,39 +39,39 @@ public class CartServiceImpl implements CartService {
         if (productServiceModel == null) {
             return null;
         }
-        /* Prepare cartProductServiceModel */
-        CartProductServiceModel cartProductServiceModel = new CartProductServiceModel();
-        cartProductServiceModel.setProduct(productServiceModel);
-        cartProductServiceModel.setProductType(productServiceModel.getId());
-        cartProductServiceModel.setQuantity(quantity);
-        cartProductServiceModel.calculateTotalFields();
+        /* Check if the cart product exists else create new */
+        CartProductServiceModel cartProductServiceModelDB = this.cartProductService.findByProductId(productId);
+        CartProductServiceModel cartProductServiceModel;
 
-        /* Save the cartProductServiceModel to DB */
-        CartProduct cartProductSaved = this.cartProductRepository
-                .saveAndFlush(this.modelMapper.map(cartProductServiceModel, CartProduct.class));
+        if (cartProductServiceModelDB != null) {
+            /* If exists increase the quantity */
+            cartProductServiceModelDB.addQuantity(quantity);
+            cartProductServiceModelDB.calculateTotalFields();
+            cartProductServiceModel = this.cartProductService.persistCartProduct(cartProductServiceModelDB);
+        } else {
+            /* If doesn't exists create new */
+            cartProductServiceModel = this.cartProductService.createCartProduct(productServiceModel, quantity);
+        }
 
         /* Update the cart in DB with the added cartProduct */
-        this.persistCart(userId, cartProductSaved);
+        this.persistCart(userId, cartProductServiceModel);
 
         /* Return the added to cart Product */
         return productServiceModel;
     }
 
     @Transactional
-    void persistCart(String userId, CartProduct cartProductSaved) {
+    void persistCart(String userId, CartProductServiceModel cartProductServiceModel) {
+
+        CartProduct cartProduct = this.modelMapper.map(cartProductServiceModel, CartProduct.class);
 
         Cart cart = this.cartRepository.findCartByUserId(userId).orElse(null);
-        String productType = cartProductSaved.getProductType();
-        boolean alreadyContainThisProduct = cart.getCartProducts().containsKey(productType);
+        String productType = cartProduct.getProductType();
+        boolean alreadyContainThisProduct = cart.getCartProducts().contains(cartProduct);
 
-        if (alreadyContainThisProduct) {
-            Map<String, CartProduct> cartProducts = cart.getCartProducts();
-            CartProduct cartProduct = cartProducts.get(productType);
-            cartProduct.addQuantity(cartProductSaved.getQuantity());
-        } else {
-            cart.addCartProduct(cartProductSaved);
+        if (!alreadyContainThisProduct) {
+            cart.addCartProduct(cartProduct);
         }
-
         /* Calculate total fields and save */
         cart.calculateTotalFields();
         this.cartRepository.saveAndFlush(cart);

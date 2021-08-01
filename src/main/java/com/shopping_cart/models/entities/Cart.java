@@ -5,15 +5,15 @@ import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "carts")
 public class Cart extends BaseEntity {
 
     private User user;
-    private Map<String, CartProduct> cartProducts = new HashMap<>();
+    private List<CartProduct> cartProducts;
     private BigDecimal totalPriceProducts;
     private BigDecimal totalPriceAfterQuantityDiscount;
     private BigDecimal totalPriceAfterAllSumDiscounts;
@@ -30,7 +30,7 @@ public class Cart extends BaseEntity {
     }
 
     private void setDefault() {
-        this.cartProducts = new HashMap<>();
+        this.cartProducts = new ArrayList<>();
         this.totalPriceProducts = BigDecimal.ZERO;
         this.totalPriceAfterQuantityDiscount = BigDecimal.ZERO;
         this.totalPriceAfterAllSumDiscounts = BigDecimal.ZERO;
@@ -41,7 +41,7 @@ public class Cart extends BaseEntity {
     public void calculateTotalFields() {
 
         /* Calculate totalPriceProducts and totalPriceAfterQuantityDiscount */
-        for (CartProduct cartProduct : cartProducts.values()) {
+        for (CartProduct cartProduct : cartProducts) {
 
             this.totalPriceProducts = this.totalPriceProducts
                     .add(cartProduct.getTotalPrice());
@@ -54,25 +54,25 @@ public class Cart extends BaseEntity {
         if (this.totalPriceAfterQuantityDiscount.compareTo(BigDecimal.valueOf(100)) > 0) {
 
             this.totalPriceAfterAllSumDiscounts = this.totalPriceAfterQuantityDiscount
-                    .divide(BigDecimal.valueOf(100), RoundingMode.UNNECESSARY).multiply(BigDecimal.valueOf(90));
+                    .divide(BigDecimal.valueOf(100), RoundingMode.HALF_DOWN).multiply(BigDecimal.valueOf(90));
         } else {
             this.totalPriceAfterAllSumDiscounts = this.totalPriceAfterQuantityDiscount;
         }
 
         /* Calculate how much is one percent of total product price before any discounts */
         BigDecimal onePercentOfTotalPriceProducts = this.totalPriceProducts
-                .divide(BigDecimal.valueOf(100), RoundingMode.UNNECESSARY);
+                .divide(BigDecimal.valueOf(100), RoundingMode.HALF_DOWN);
 
         /* Calculate finalDiscountInMoney */
         this.finalDiscountInMoney = this.totalPriceProducts.subtract(this.totalPriceAfterAllSumDiscounts);
 
         /* Calculate finalDiscountInPercent */
         this.finalDiscountInPercent = this.finalDiscountInMoney
-                .divide(onePercentOfTotalPriceProducts, RoundingMode.UNNECESSARY).doubleValue();
+                .divide(onePercentOfTotalPriceProducts, RoundingMode.HALF_DOWN).doubleValue();
     }
 
     public void addCartProduct(CartProduct cartProduct) {
-        this.cartProducts.put(cartProduct.getProductType(), cartProduct);
+        this.cartProducts.add(cartProduct);
     }
 
     @OneToOne(targetEntity = User.class)
@@ -84,16 +84,13 @@ public class Cart extends BaseEntity {
         this.user = user;
     }
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "cart_cart_mproduct_mapping",
-            joinColumns = {@JoinColumn(name = "cart_product_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "cart_id", referencedColumnName = "id")})
-    @MapKey(name = "id")
-    public Map<String, CartProduct> getCartProducts() {
+    @OneToMany(targetEntity = CartProduct.class , fetch = FetchType.EAGER, cascade=CascadeType.MERGE)
+    @JoinColumn(name = "cart_id")
+    public List<CartProduct> getCartProducts() {
         return cartProducts;
     }
 
-    public void setCartProducts(Map<String, CartProduct> cartProducts) {
+    public void setCartProducts(List<CartProduct> cartProducts) {
         this.cartProducts = cartProducts;
     }
 

@@ -4,13 +4,13 @@ import com.shopping_cart.models.entities.BaseEntity;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CartServiceModel extends BaseEntity {
 
     private UserServiceModel user;
-    private Map<String, CartProductServiceModel> cartProducts;
+    private List<CartProductServiceModel> cartProducts;
     private BigDecimal totalPriceProducts;
     private BigDecimal totalPriceAfterQuantityDiscount;
     private BigDecimal totalPriceAfterAllSumDiscounts;
@@ -22,7 +22,7 @@ public class CartServiceModel extends BaseEntity {
     }
 
     private void setDefault() {
-        this.cartProducts = new HashMap<>();
+        this.cartProducts = new ArrayList<>();
         this.totalPriceProducts = BigDecimal.ZERO;
         this.totalPriceAfterQuantityDiscount = BigDecimal.ZERO;
         this.totalPriceAfterAllSumDiscounts = BigDecimal.ZERO;
@@ -33,7 +33,7 @@ public class CartServiceModel extends BaseEntity {
     public void calculateTotalFields() {
 
         /* Calculate totalPriceProducts and totalPriceAfterQuantityDiscount */
-        for (CartProductServiceModel cartProductServiceModel : cartProducts.values()) {
+        for (CartProductServiceModel cartProductServiceModel : cartProducts) {
 
             this.totalPriceProducts = this.totalPriceProducts
                     .add(cartProductServiceModel.getTotalPrice());
@@ -46,25 +46,25 @@ public class CartServiceModel extends BaseEntity {
         if (this.totalPriceAfterQuantityDiscount.compareTo(BigDecimal.valueOf(100)) > 0) {
 
             this.totalPriceAfterAllSumDiscounts = this.totalPriceAfterQuantityDiscount
-                    .divide(BigDecimal.valueOf(100), RoundingMode.UNNECESSARY).multiply(BigDecimal.valueOf(90));
+                    .divide(BigDecimal.valueOf(100), RoundingMode.HALF_DOWN).multiply(BigDecimal.valueOf(90));
         } else {
             this.totalPriceAfterAllSumDiscounts = this.totalPriceAfterQuantityDiscount;
         }
 
         /* Calculate how much is one percent of total product price before any discounts */
         BigDecimal onePercentOfTotalPriceProducts = this.totalPriceProducts
-                .divide(BigDecimal.valueOf(100), RoundingMode.UNNECESSARY);
+                .divide(BigDecimal.valueOf(100), RoundingMode.HALF_DOWN);
 
         /* Calculate finalDiscountInMoney */
         this.finalDiscountInMoney = this.totalPriceProducts.subtract(this.totalPriceAfterAllSumDiscounts);
 
         /* Calculate finalDiscountInPercent */
         this.finalDiscountInPercent = this.finalDiscountInMoney
-                .divide(onePercentOfTotalPriceProducts, RoundingMode.UNNECESSARY).doubleValue();
+                .divide(onePercentOfTotalPriceProducts, RoundingMode.HALF_DOWN).doubleValue();
     }
 
     public void addCartProduct(CartProductServiceModel cartProductServiceModel) {
-        this.cartProducts.put(cartProductServiceModel.getProductType(), cartProductServiceModel);
+        this.cartProducts.add(cartProductServiceModel);
     }
 
     public UserServiceModel getUser() {
@@ -75,11 +75,11 @@ public class CartServiceModel extends BaseEntity {
         this.user = user;
     }
 
-    public Map<String, CartProductServiceModel> getCartProducts() {
+    public List<CartProductServiceModel> getCartProducts() {
         return cartProducts;
     }
 
-    public void setCartProducts(Map<String, CartProductServiceModel> cartProducts) {
+    public void setCartProducts(List<CartProductServiceModel> cartProducts) {
         this.cartProducts = cartProducts;
     }
 
