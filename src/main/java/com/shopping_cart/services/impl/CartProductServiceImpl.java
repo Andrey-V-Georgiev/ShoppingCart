@@ -27,7 +27,6 @@ public class CartProductServiceImpl implements CartProductService {
         /* Create new and set the fields */
         CartProductServiceModel cartProductServiceModel = new CartProductServiceModel();
         cartProductServiceModel.setProduct(productServiceModel);
-        cartProductServiceModel.setProductType(productServiceModel.getId());
         cartProductServiceModel.setQuantity(quantity);
         cartProductServiceModel.calculateTotalFields();
 

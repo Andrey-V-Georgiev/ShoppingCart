@@ -66,7 +66,6 @@ public class CartServiceImpl implements CartService {
         CartProduct cartProduct = this.modelMapper.map(cartProductServiceModel, CartProduct.class);
 
         Cart cart = this.cartRepository.findCartByUserId(userId).orElse(null);
-        String productType = cartProduct.getProductType();
         boolean alreadyContainThisProduct = cart.getCartProducts().contains(cartProduct);
 
         if (!alreadyContainThisProduct) {

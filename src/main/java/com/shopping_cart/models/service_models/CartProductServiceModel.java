@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 public class CartProductServiceModel extends BaseEntity {
 
     private ProductServiceModel product;
-    private String productType;
     private Integer quantity;
     private BigDecimal totalPrice;
     private BigDecimal totalPriceAfterQuantityDiscount;
@@ -35,14 +34,6 @@ public class CartProductServiceModel extends BaseEntity {
 
     public void setProduct(ProductServiceModel product) {
         this.product = product;
-    }
-
-    public String getProductType() {
-        return productType;
-    }
-
-    public void setProductType(String productType) {
-        this.productType = productType;
     }
 
     public Integer getQuantity() {

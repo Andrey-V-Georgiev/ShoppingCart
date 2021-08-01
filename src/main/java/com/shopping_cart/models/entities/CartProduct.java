@@ -14,7 +14,6 @@ import static com.shopping_cart.constants.ModelsMsgConstants.*;
 public class CartProduct extends BaseEntity  {
 
     private Product product;
-    private String productType;
     private Integer quantity;
     private BigDecimal totalPrice;
     private BigDecimal totalPriceAfterQuantityDiscount;
@@ -29,14 +28,6 @@ public class CartProduct extends BaseEntity  {
 
     public void setProduct(Product product) {
         this.product = product;
-    }
-
-    public String getProductType() {
-        return productType;
-    }
-
-    public void setProductType(String productType) {
-        this.productType = productType;
     }
 
     @NotNull(message = ORDERED_QUANTITY_NOT_NULL)
@@ -65,9 +56,5 @@ public class CartProduct extends BaseEntity  {
 
     public void setTotalPriceAfterQuantityDiscount(BigDecimal totalPriceAfterQuantityDiscount) {
         this.totalPriceAfterQuantityDiscount = totalPriceAfterQuantityDiscount;
-    }
-
-    public void addQuantity(Integer quantity) {
-        this.quantity += quantity;
     }
 }
