@@ -11,6 +11,8 @@ public class ResponseMsgConstants {
     public static final String PRODUCT_REMOVED_FROM_CART = "Product was removed from cart";
     public static final String PRODUCT_REMOVED = "Product was successfully removed";
 
+    public static final String CART_EMPTY = "All products are successfully removed from cart";
+
     /* Negative messages */
 
     public static final String WRONG_USERNAME_OR_PASSWORD = "Wrong username or password";

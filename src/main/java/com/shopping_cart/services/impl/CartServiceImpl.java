@@ -14,8 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -34,7 +34,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartServiceModel findByUserId(String userId) {
+    public CartServiceModel findCartByUserId(String userId) {
         return this.cartRepository.findCartByUserId(userId)
                 .map(o -> this.modelMapper.map(o, CartServiceModel.class)).orElse(null);
     }
@@ -43,7 +43,7 @@ public class CartServiceImpl implements CartService {
     public RemoveProductFromCart removeProduct(String productId, String userId, int quantity) {
 
         /* Get the cartProducts of user cart */
-        CartServiceModel cartServiceModel = this.findByUserId(userId);
+        CartServiceModel cartServiceModel = this.findCartByUserId(userId);
         List<CartProductServiceModel> cartProducts = cartServiceModel.getCartProducts();
 
         /* Find the cart product which contains this type of product */
@@ -91,6 +91,24 @@ public class CartServiceImpl implements CartService {
         this.cartProductService.removeById(cartProductServiceModel.getId());
         cartProducts.remove(cartProductServiceModel);
         cartServiceModel.calculateTotalFields();
+        this.cartRepository.saveAndFlush(this.modelMapper.map(cartServiceModel, Cart.class));
+    }
+
+    @Override
+    public void emptyTheCart(String userId) {
+
+        /* Get the cartProducts of user cart */
+        CartServiceModel cartServiceModel = this.findCartByUserId(userId);
+        List<CartProductServiceModel> cartProducts = cartServiceModel.getCartProducts();
+
+        /* Delete all cartProducts from cart */
+        for (CartProductServiceModel cartProduct : cartProducts) {
+            this.cartProductService.removeById(cartProduct.getId());
+        }
+        /* Set empty list to cart */
+        cartServiceModel.setCartProducts(new ArrayList<>());
+
+        /* Save changes */
         this.cartRepository.saveAndFlush(this.modelMapper.map(cartServiceModel, Cart.class));
     }
 

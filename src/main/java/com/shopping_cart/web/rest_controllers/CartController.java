@@ -42,7 +42,7 @@ public class CartController {
         String userId = String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         try {
             /* Find cart */
-            CartServiceModel cartServiceModel = this.cartService.findByUserId(userId);
+            CartServiceModel cartServiceModel = this.cartService.findCartByUserId(userId);
 
             /* If cannot find cart */
             if (cartServiceModel == null) {
@@ -121,12 +121,14 @@ public class CartController {
 
     @DeleteMapping("/empty")
     @PreAuthorize(HAS_ROLE_ADMIN_OR_USER)
-    public ResponseEntity<?> clearAllProducts() {
+    public ResponseEntity<?> removeAllProducts() {
 
         String userId = String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         try {
+            /* Remove all products from cart */
+            this.cartService.emptyTheCart(userId);
 
-            return ResponseEntity.status(HttpStatus.OK).body(null);
+            return ResponseEntity.status(HttpStatus.OK).body(CART_EMPTY);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
