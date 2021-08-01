@@ -25,6 +25,10 @@ public class CartProductServiceModel extends BaseEntity {
         }
     }
 
+    public void addQuantity(Integer quantity) {
+        this.quantity += quantity;
+    }
+
     public CartProductServiceModel() {
     }
 
@@ -58,9 +62,5 @@ public class CartProductServiceModel extends BaseEntity {
 
     public void setTotalPriceAfterQuantityDiscount(BigDecimal totalPriceAfterQuantityDiscount) {
         this.totalPriceAfterQuantityDiscount = totalPriceAfterQuantityDiscount;
-    }
-
-    public void addQuantity(Integer quantity) {
-        this.quantity += quantity;
     }
 }

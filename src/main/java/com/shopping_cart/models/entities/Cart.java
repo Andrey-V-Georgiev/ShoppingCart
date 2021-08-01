@@ -1,10 +1,8 @@
 package com.shopping_cart.models.entities;
 
-
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,43 +34,6 @@ public class Cart extends BaseEntity {
         this.totalPriceAfterAllSumDiscounts = BigDecimal.ZERO;
         this.finalDiscountInPercent = 0.0;
         this.finalDiscountInMoney = BigDecimal.ZERO;
-    }
-
-    public void calculateTotalFields() {
-
-        /* Calculate totalPriceProducts and totalPriceAfterQuantityDiscount */
-        for (CartProduct cartProduct : cartProducts) {
-
-            this.totalPriceProducts = this.totalPriceProducts
-                    .add(cartProduct.getTotalPrice());
-
-            this.totalPriceAfterQuantityDiscount = this.totalPriceAfterQuantityDiscount
-                    .add(cartProduct.getTotalPriceAfterQuantityDiscount());
-        }
-
-        /* If totalPriceAfterQuantityDiscount is more than 100 there is a 10% discount */
-        if (this.totalPriceAfterQuantityDiscount.compareTo(BigDecimal.valueOf(100)) > 0) {
-
-            this.totalPriceAfterAllSumDiscounts = this.totalPriceAfterQuantityDiscount
-                    .divide(BigDecimal.valueOf(100), RoundingMode.HALF_DOWN).multiply(BigDecimal.valueOf(90));
-        } else {
-            this.totalPriceAfterAllSumDiscounts = this.totalPriceAfterQuantityDiscount;
-        }
-
-        /* Calculate how much is one percent of total product price before any discounts */
-        BigDecimal onePercentOfTotalPriceProducts = this.totalPriceProducts
-                .divide(BigDecimal.valueOf(100), RoundingMode.HALF_DOWN);
-
-        /* Calculate finalDiscountInMoney */
-        this.finalDiscountInMoney = this.totalPriceProducts.subtract(this.totalPriceAfterAllSumDiscounts);
-
-        /* Calculate finalDiscountInPercent */
-        this.finalDiscountInPercent = this.finalDiscountInMoney
-                .divide(onePercentOfTotalPriceProducts, RoundingMode.HALF_DOWN).doubleValue();
-    }
-
-    public void addCartProduct(CartProduct cartProduct) {
-        this.cartProducts.add(cartProduct);
     }
 
     @OneToOne(targetEntity = User.class)

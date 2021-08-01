@@ -32,14 +32,14 @@ public class CartServiceModel extends BaseEntity {
 
     public void calculateTotalFields() {
 
-        /* Calculate totalPriceProducts and totalPriceAfterQuantityDiscount */
-        for (CartProductServiceModel cartProductServiceModel : cartProducts) {
+        for (CartProductServiceModel cartProduct : cartProducts) {
 
-            this.totalPriceProducts = this.totalPriceProducts
-                    .add(cartProductServiceModel.getTotalPrice());
+            /* Calculate totalPriceProducts */
+            this.totalPriceProducts = this.totalPriceProducts.add(cartProduct.getTotalPrice());
 
+            /* Calculate totalPriceAfterQuantityDiscount */
             this.totalPriceAfterQuantityDiscount = this.totalPriceAfterQuantityDiscount
-                    .add(cartProductServiceModel.getTotalPriceAfterQuantityDiscount());
+                    .add(cartProduct.getTotalPriceAfterQuantityDiscount());
         }
 
         /* If totalPriceAfterQuantityDiscount is more than 100 there is a 10% discount */
