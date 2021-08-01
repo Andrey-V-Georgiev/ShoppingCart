@@ -113,6 +113,17 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    public boolean checkCartIsEmpty(String userId) {
+
+        /* Get the cartProducts of user cart */
+        CartServiceModel cartServiceModel = this.findCartByUserId(userId);
+        List<CartProductServiceModel> cartProducts = cartServiceModel.getCartProducts();
+
+        /* If cart is empty return true */
+        return cartProducts.size() == 0;
+    }
+
+    @Override
     public ProductServiceModel addProductToCart(String userId, String productId, int quantity) {
 
         /* Check product with this id exists */

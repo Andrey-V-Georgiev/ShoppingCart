@@ -125,10 +125,14 @@ public class CartController {
 
         String userId = String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         try {
+            /* Check for cart already empty */
+            if(this.cartService.checkCartIsEmpty(userId)) {
+                return ResponseEntity.status(HttpStatus.OK).body(CART_ALREADY_EMPTY);
+            }
             /* Remove all products from cart */
             this.cartService.emptyTheCart(userId);
 
-            return ResponseEntity.status(HttpStatus.OK).body(CART_EMPTY);
+            return ResponseEntity.status(HttpStatus.OK).body(CART_EMPTY_SUCCESS);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

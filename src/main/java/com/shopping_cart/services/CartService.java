@@ -13,4 +13,6 @@ public interface CartService {
     RemoveProductFromCart removeProduct(String productId, String userId, int quantity);
 
     void emptyTheCart(String userId);
+
+    boolean checkCartIsEmpty(String userId);
 }

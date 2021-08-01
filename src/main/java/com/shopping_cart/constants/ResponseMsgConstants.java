@@ -12,7 +12,8 @@ public class ResponseMsgConstants {
     public static final String PRODUCT_REMOVED_FROM_CART = "Product was removed from cart";
     public static final String PRODUCT_REMOVED = "Product was successfully removed";
 
-    public static final String CART_EMPTY = "All products are successfully removed from cart";
+    public static final String CART_EMPTY_SUCCESS = "All products are successfully removed from cart";
+    public static final String CART_ALREADY_EMPTY = "Your cart is already empty";
 
     /* Negative messages */
 
