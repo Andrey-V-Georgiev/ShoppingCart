@@ -1,8 +1,8 @@
 package com.shopping_cart.services.impl;
 
 import com.shopping_cart.models.entities.Cart;
-import com.shopping_cart.models.entities.CartProduct;
 import com.shopping_cart.models.service_models.CartProductServiceModel;
+import com.shopping_cart.models.service_models.CartServiceModel;
 import com.shopping_cart.models.service_models.ProductServiceModel;
 import com.shopping_cart.repositories.CartRepository;
 import com.shopping_cart.services.CartProductService;
@@ -30,7 +30,6 @@ public class CartServiceImpl implements CartService {
         this.cartProductService = cartProductService;
     }
 
-
     @Override
     public ProductServiceModel addProductToCart(String userId, String productId, int quantity) {
 
@@ -39,6 +38,21 @@ public class CartServiceImpl implements CartService {
         if (productServiceModel == null) {
             return null;
         }
+        /* Handle the cartProduct */
+        CartProductServiceModel cartProductServiceModel = this.cartProductCreateOrUpdate(productId, quantity, productServiceModel);
+
+        /* Handle the cart */
+        this.updateCart(userId, cartProductServiceModel);
+
+        /* Return the added to cart Product */
+        return productServiceModel;
+    }
+
+    private CartProductServiceModel cartProductCreateOrUpdate(
+            String productId,
+            Integer quantity,
+            ProductServiceModel productServiceModel) {
+
         /* Check if the cart product exists else create new */
         CartProductServiceModel cartProductServiceModelDB = this.cartProductService.findByProductId(productId);
         CartProductServiceModel cartProductServiceModel;
@@ -52,27 +66,28 @@ public class CartServiceImpl implements CartService {
             /* If doesn't exists create new */
             cartProductServiceModel = this.cartProductService.createCartProduct(productServiceModel, quantity);
         }
-
-        /* Update the cart in DB with the added cartProduct */
-        this.persistCart(userId, cartProductServiceModel);
-
-        /* Return the added to cart Product */
-        return productServiceModel;
+        return cartProductServiceModel;
     }
 
     @Transactional
-    void persistCart(String userId, CartProductServiceModel cartProductServiceModel) {
+    void updateCart(String userId, CartProductServiceModel cartProductServiceModel) {
 
-        CartProduct cartProduct = this.modelMapper.map(cartProductServiceModel, CartProduct.class);
+        /* Find user cart */
+        CartServiceModel cartServiceModel = this.cartRepository
+                .findCartByUserId(userId).map(o -> this.modelMapper.map(o, CartServiceModel.class)).orElse(null);
 
-        Cart cart = this.cartRepository.findCartByUserId(userId).orElse(null);
-        boolean alreadyContainThisProduct = cart.getCartProducts().contains(cartProduct);
+        /* Check if the cart already contains this cart product */
+        assert cartServiceModel != null;
+        boolean alreadyContainThisProduct = cartServiceModel.getCartProducts().contains(cartProductServiceModel);
 
+        /* If cart doesn't add it */
         if (!alreadyContainThisProduct) {
-            cart.addCartProduct(cartProduct);
+            cartServiceModel.addCartProduct(cartProductServiceModel);
         }
         /* Calculate total fields and save */
-        cart.calculateTotalFields();
-        this.cartRepository.saveAndFlush(cart);
+        cartServiceModel.calculateTotalFields();
+
+        /* Save changes to DB */
+        this.cartRepository.saveAndFlush(this.modelMapper.map(cartServiceModel, Cart.class));
     }
 }
