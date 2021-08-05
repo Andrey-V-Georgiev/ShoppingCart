@@ -46,8 +46,9 @@ public class ProductController {
         }
     }
 
+
     @GetMapping("/all")
-    @PreAuthorize(HAS_ROLE_ADMIN_OR_USER)
+    // @PreAuthorize(HAS_ROLE_ADMIN_OR_USER)
     public ResponseEntity<?> findAllProduct() {
 
         try {
