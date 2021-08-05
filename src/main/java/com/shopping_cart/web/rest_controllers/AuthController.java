@@ -115,8 +115,7 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.OK).body(LOGOUT_SUCCESS);
 
         } catch (Exception e) {
-            /* The security will throw 401 before getting here */
-            return ResponseEntity.status(HttpStatus.OK).body(ALREADY_LOGGED_OUT);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 }

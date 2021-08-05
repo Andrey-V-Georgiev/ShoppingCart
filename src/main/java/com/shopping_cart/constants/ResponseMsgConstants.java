@@ -6,7 +6,6 @@ public class ResponseMsgConstants {
 
     public static final String REGISTER_SUCCESS = "Your registration is successful";
     public static final String LOGOUT_SUCCESS = "You are successfully logged out";
-    public static final String ALREADY_LOGGED_OUT = "You are already logged out";
 
     public static final String PRODUCT_QUANTITY_DECREASED = "Quantity of this product was decreased";
     public static final String PRODUCT_REMOVED_FROM_CART = "Product was removed from cart";
