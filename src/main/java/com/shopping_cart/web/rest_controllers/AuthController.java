@@ -1,5 +1,6 @@
 package com.shopping_cart.web.rest_controllers;
 
+import com.google.gson.Gson;
 import com.shopping_cart.models.binding_models.UserLoginBindingModel;
 import com.shopping_cart.models.binding_models.UserRegisterBindingModel;
 import com.shopping_cart.models.service_models.UserServiceModel;
@@ -41,6 +42,8 @@ public class AuthController {
             @Valid @RequestBody UserRegisterBindingModel userRegisterBindingModel,
             BindingResult bindingResult) {
 
+        System.out.println("HIT register");
+
         /* Check does password and confirmedPassword match */
         if (!userRegisterBindingModel.getPassword().equals(userRegisterBindingModel.getConfirmPassword())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(CONFIRMED_PASSWORD_NOT_MATCH);
@@ -58,6 +61,7 @@ public class AuthController {
             if (userServiceModel == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(USERNAME_ALREADY_IN_USE);
             }
+            Gson g = new Gson();
             return ResponseEntity.status(HttpStatus.CREATED).body(REGISTER_SUCCESS);
 
         } catch (Exception e) {
