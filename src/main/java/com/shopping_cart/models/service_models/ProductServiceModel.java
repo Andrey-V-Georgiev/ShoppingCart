@@ -7,6 +7,7 @@ public class ProductServiceModel extends BaseServiceModel {
 
     private String name;
     private String description;
+    private String pictureUrl;
     private BigDecimal price;
     private LocalDateTime addedOn;
 
@@ -27,6 +28,14 @@ public class ProductServiceModel extends BaseServiceModel {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
     }
 
     public BigDecimal getPrice() {

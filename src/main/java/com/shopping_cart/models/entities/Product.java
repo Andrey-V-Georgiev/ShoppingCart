@@ -18,10 +18,19 @@ public class Product extends BaseEntity {
 
     private String name;
     private String description;
+    private String pictureUrl;
     private BigDecimal price;
     private LocalDateTime addedOn;
 
     public Product() {
+    }
+
+    public Product(String name, String description, String pictureUrl, BigDecimal price, LocalDateTime addedOn) {
+        this.name = name;
+        this.description = description;
+        this.pictureUrl = pictureUrl;
+        this.price = price;
+        this.addedOn = addedOn;
     }
 
     @NotEmpty(message = PRODUCT_NAME_NOT_EMPTY)
@@ -38,7 +47,7 @@ public class Product extends BaseEntity {
 
     @NotEmpty(message = PRODUCT_DESCRIPTION_NOT_EMPTY)
     @NotNull(message = PRODUCT_DESCRIPTION_NOT_NULL)
-    @Size(min = 3, max = 500, message = PRODUCT_DESCRIPTION_LENGTH)
+    @Size(min = 3,  message = PRODUCT_DESCRIPTION_LENGTH)
     @Column(name = "description", columnDefinition="TEXT")
     public String getDescription() {
         return description;
@@ -46,6 +55,18 @@ public class Product extends BaseEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @NotEmpty(message = PRODUCT_PICTURE_URL_NOT_EMPTY)
+    @NotNull(message = PRODUCT_PICTURE_URL_NOT_NULL)
+    @Size(min = 3, message = PRODUCT_PICTURE_URL_LENGTH)
+    @Column(name = "picture_url", columnDefinition="TEXT")
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
     }
 
     @NotNull(message = PRODUCT_PRICE_NOT_NULL)

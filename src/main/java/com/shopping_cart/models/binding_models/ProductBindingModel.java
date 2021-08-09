@@ -12,16 +12,13 @@ public class ProductBindingModel {
 
     private String name;
     private String description;
+    private String pictureUrl;
     private BigDecimal price;
 
-    public ProductBindingModel(String name, BigDecimal price) {
-        this.name = name;
-        this.price = price;
-    }
 
     @NotEmpty(message = PRODUCT_NAME_NOT_EMPTY)
     @NotNull(message = PRODUCT_NAME_NOT_NULL)
-    @Size(min = 3, max = 50, message =  PRODUCT_NAME_LENGTH)
+    @Size(min = 3, max = 50, message = PRODUCT_NAME_LENGTH)
     public String getName() {
         return name;
     }
@@ -32,9 +29,20 @@ public class ProductBindingModel {
 
     @NotEmpty(message = PRODUCT_DESCRIPTION_NOT_EMPTY)
     @NotNull(message = PRODUCT_DESCRIPTION_NOT_NULL)
-    @Size(min = 3, max = 500, message = PRODUCT_DESCRIPTION_LENGTH)
+    @Size(min = 3, message = PRODUCT_DESCRIPTION_LENGTH)
     public String getDescription() {
         return description;
+    }
+
+    @NotEmpty(message = PRODUCT_PICTURE_URL_NOT_EMPTY)
+    @NotNull(message = PRODUCT_PICTURE_URL_NOT_NULL)
+    @Size(min = 3, message = PRODUCT_PICTURE_URL_LENGTH)
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
     }
 
     public void setDescription(String description) {

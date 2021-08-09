@@ -19,9 +19,13 @@ public class ModelsMsgConstants {
     public static final String PRODUCT_NAME_NOT_EMPTY = "Product name cannot be empty field";
     public static final String PRODUCT_NAME_NOT_NULL = "Product name cannot be null";
 
-    public static final String PRODUCT_DESCRIPTION_LENGTH = "Product description must be between 3 and 500 symbols";
+    public static final String PRODUCT_DESCRIPTION_LENGTH = "Product description must be at least 3 symbols";
     public static final String PRODUCT_DESCRIPTION_NOT_EMPTY = "Product description cannot be empty field";
     public static final String PRODUCT_DESCRIPTION_NOT_NULL = "Product description cannot be null";
+
+    public static final String PRODUCT_PICTURE_URL_LENGTH = "Product picture url must be at least 3 symbols";
+    public static final String PRODUCT_PICTURE_URL_NOT_EMPTY = "Product picture url cannot be empty field";
+    public static final String PRODUCT_PICTURE_URL_NOT_NULL = "Product picture url cannot be null";
 
     public static final String PRODUCT_PRICE = "Product price must be at least one";
     public static final String PRODUCT_PRICE_NOT_NULL = "Product price cannot be null";
