@@ -5,14 +5,16 @@ public class UserViewModel {
     private String username;
     private String email;
     private String token;
+    private String role;
 
     public UserViewModel() {
     }
 
-    public UserViewModel(String username, String email, String token) {
+    public UserViewModel(String username, String email, String token, String role) {
         this.username = username;
         this.email = email;
         this.token = token;
+        this.role = role;
     }
 
     public String getUsername() {
@@ -37,5 +39,13 @@ public class UserViewModel {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
