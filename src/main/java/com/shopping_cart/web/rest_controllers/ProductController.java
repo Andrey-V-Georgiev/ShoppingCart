@@ -28,8 +28,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping("/{id}")
-    @PreAuthorize(HAS_ROLE_ADMIN_OR_USER)
+    @GetMapping("/details/{id}")
     public ResponseEntity<?> findProductById(@PathVariable("id") String id) {
 
         try {
