@@ -8,7 +8,7 @@ public class ResponseMsgConstants {
 
     /* Positive messages */
 
-    public static final String REGISTER_SUCCESS = g.toJson("Your registration is successful");
+    public static final String REGISTER_SUCCESS = g.toJson("Your registration was successful");
     public static final String LOGOUT_SUCCESS = g.toJson("You are successfully logged out");
 
     public static final String PRODUCT_QUANTITY_DECREASED = g.toJson("Quantity of this product was decreased");
@@ -32,4 +32,5 @@ public class ResponseMsgConstants {
     public static final String QUANTITY_MORE_THAN_AVAILABLE = g.toJson("You are trying to decrease with more then the available quantity");
     public static final String CART_NOT_FOUND = g.toJson("Cart not found");
 
+    public static final String FRIENDLY_INTERNAL_SERVER_ERROR = g.toJson("Your request hasn't been processed, please try again");
 }

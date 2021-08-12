@@ -53,7 +53,7 @@ public class CartController {
 
             return ResponseEntity.status(HttpStatus.OK).body(cartViewModel);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(FRIENDLY_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -80,7 +80,7 @@ public class CartController {
             }
             return ResponseEntity.status(HttpStatus.OK).body(productServiceModel);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(FRIENDLY_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -115,7 +115,7 @@ public class CartController {
                     return ResponseEntity.status(HttpStatus.OK).body(PRODUCT_REMOVED_FROM_CART);
             }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(FRIENDLY_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -134,7 +134,7 @@ public class CartController {
 
             return ResponseEntity.status(HttpStatus.OK).body(CART_EMPTY_SUCCESS);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(FRIENDLY_INTERNAL_SERVER_ERROR);
         }
     }
 }

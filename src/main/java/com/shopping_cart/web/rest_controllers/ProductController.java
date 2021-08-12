@@ -59,9 +59,11 @@ public class ProductController {
             if (productServiceModelAll.size() == 0) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(PRODUCTS_NOT_FOUND);
             }
-            return ResponseEntity.status(HttpStatus.OK).body(productServiceModelAll);
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(productServiceModelAll);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(FRIENDLY_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -86,7 +88,7 @@ public class ProductController {
             }
             return ResponseEntity.status(HttpStatus.CREATED).body(productServiceModel);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(FRIENDLY_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -113,7 +115,7 @@ public class ProductController {
 
             return ResponseEntity.status(HttpStatus.OK).body(productServiceModel);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(FRIENDLY_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -131,7 +133,7 @@ public class ProductController {
             }
             return ResponseEntity.status(HttpStatus.OK).body(PRODUCT_REMOVED);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(FRIENDLY_INTERNAL_SERVER_ERROR);
         }
     }
 }

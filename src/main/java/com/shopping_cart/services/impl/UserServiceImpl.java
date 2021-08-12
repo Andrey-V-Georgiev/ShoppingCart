@@ -70,6 +70,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserServiceModel findUserByUsernameAndPassword(String username, String password) {
 
+        System.out.println(username);
+        System.out.println(password);
+
         List<UserServiceModel> userServiceModels = this.userRepository.findAllByUsername(username)
                 .stream()
                 .map(o -> o.get())

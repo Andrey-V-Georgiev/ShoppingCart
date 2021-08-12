@@ -54,4 +54,34 @@ public class ModelsMsgConstants {
     public static final String USER_ROLE_REGEX_MSG = "Not valid user role";
     public static final String USER_ROLE_REGEX = "^(ROLE_ADMIN||ROLE_USER)$";
 
+    /* Contact */
+
+    public static final String CITY_NAME_NOT_EMPTY = "City name cannot be empty field";
+    public static final String CITY_NAME_NOT_NULL = "City name cannot be null";
+    public static final String CITY_NAME_LENGTH = "City name must be at least 3 symbols";
+
+    public static final String IFRAME_URL_NOT_EMPTY = "Iframe url cannot be empty field";
+    public static final String IFRAME_URL_NOT_NULL = "Iframe url cannot be null";
+    public static final String IFRAME_URL_LENGTH = "Iframe url must be at least 3 symbols";
+
+    public static final String CONTACT_ADDRESS_NOT_EMPTY = "Contact address cannot be empty field";
+    public static final String CONTACT_ADDRESS_NOT_NULL = "Contact address cannot be null";
+    public static final String CONTACT_ADDRESS_LENGTH = "Contact address must be at least 3 symbols";
+
+    public static final String CONTACT_TEL_NOT_EMPTY = "Contact tel cannot be empty field";
+    public static final String CONTACT_TEL_NOT_NULL = "Contact tel cannot be null";
+    public static final String CONTACT_TEL_LENGTH = "Contact tel must be at least 3 symbols";
+
+    public static final String CONTACT_EMAIL_NOT_EMPTY = "Contact email cannot be empty field";
+    public static final String CONTACT_EMAIL_NOT_NULL = "Contact email cannot be null";
+    public static final String CONTACT_EMAIL_REGEX_MSG = "Not valid email";
+
+    public static final String WH_WEEK_NOT_EMPTY = "Working hours cannot be empty field";
+    public static final String WH_WEEK_NOT_NULL = "Working hours cannot be null";
+    public static final String WH_WEEK_LENGTH = "Working hours must be at least 3 symbols";
+
+    public static final String WH_WEEKEND_NOT_EMPTY = "Weekend working hours cannot be empty field";
+    public static final String WH_WEEKEND_NOT_NULL = "Weekend working hours cannot be null";
+    public static final String WH_WEEKEND_LENGTH = "Weekend working hours must be at least 3 symbols";
+
 }

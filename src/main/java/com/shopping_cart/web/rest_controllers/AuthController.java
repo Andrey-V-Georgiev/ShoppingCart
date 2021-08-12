@@ -65,7 +65,7 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.CREATED).body(REGISTER_SUCCESS);
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(FRIENDLY_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -99,9 +99,10 @@ public class AuthController {
             UserViewModel userViewModel = this.modelMapper.map(userServiceModel, UserViewModel.class);
             userViewModel.setToken(newToken);
 
-            return ResponseEntity.status(HttpStatus.OK).body(userViewModel);
+            return ResponseEntity.ok().body(userViewModel);
+
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(FRIENDLY_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -119,7 +120,7 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.OK).body(LOGOUT_SUCCESS);
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(FRIENDLY_INTERNAL_SERVER_ERROR);
         }
     }
 }

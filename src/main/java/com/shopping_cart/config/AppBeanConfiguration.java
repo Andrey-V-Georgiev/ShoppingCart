@@ -1,6 +1,8 @@
 package com.shopping_cart.config;
 
+import com.shopping_cart.models.entities.Contact;
 import com.shopping_cart.models.entities.Product;
+import com.shopping_cart.repositories.ContactRepository;
 import com.shopping_cart.repositories.ProductRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.ApplicationRunner;
@@ -27,10 +29,12 @@ public class AppBeanConfiguration {
     }
 
     @Bean
-    public ApplicationRunner initializer(ProductRepository repository) {
+    public ApplicationRunner initializer(
+            ProductRepository productRepository,
+            ContactRepository contactRepository) {
 
-        if (repository.count() == 0) {
-            return args -> repository.saveAll(Arrays.asList(
+        if (productRepository.count() == 0) {
+            return args -> productRepository.saveAll(Arrays.asList(
                     new Product(
                             "GLOCK 17 Gen5",
                             "The new frame design of the GLOCK 17 Gen5 removed the finger grooves for more versatility but still allows to easily customize its grip by using the different back straps. A flared mag-well and a cutout at the front of the frame give the user more speed during reloading when fractions of a second matter. A reversible enlarged magazine catch, changeable at user level as well as the ambidextrous slide stop lever accommodate left and right-handed operators. The rifling and the crown of the barrel were slightly modified for increased precision.",
@@ -61,6 +65,48 @@ public class AppBeanConfiguration {
                     )
             ));
         }
+
+        if (contactRepository.count() == 0) {
+            return args -> contactRepository.saveAll(Arrays.asList(
+                    new Contact(
+                            "Sofia",
+                            "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2932.3179396759338!2d23.329512315700562!3d42.69698822174912!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40aa8570f039ab5f%3A0x29f700e9fb9d4353!2sul.%20%22Moskovska%22%2033%2C%201000%20Sofia%20Center%2C%20Sofia!5e0!3m2!1sen!2sbg!4v1628771840855!5m2!1sen!2sbg",
+                            "33 Moskovska Str. Sofia 1000",
+                            "0888 888 881",
+                            "shopping-cart-sofia@gmail.com",
+                            "09:00 - 17:00",
+                            "10:00 - 16:00"
+                    ),
+                    new Contact(
+                            "Plovdiv",
+                            "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11843.306162162718!2d24.81106329166671!3d42.08976589098857!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14acd74dd7f37721%3A0xf428b989e4325212!2s4112%20Krumovo!5e0!3m2!1sen!2sbg!4v1628772050887!5m2!1sen!2sbg",
+                            "4009 Krumovo, Rodopi Municipality, Plovdiv District",
+                            "0888 888 882",
+                            "shopping-cart-plovdiv@gmail.com",
+                            "09:30 - 17:30",
+                            "10:40 - 16:40"
+                    ),
+                    new Contact(
+                            "Varna",
+                            "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2907.8014619994174!2d27.923320315712537!3d43.21365338875918!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x958943ca7d072728!2z0J_QsNC80LXRgtC90LjQuiDQvdCwINCe0YHQvNC4INC_0LXRhdC-0YLQtdC9INC_0YDQuNC80L7RgNGB0LrQuCDQv9C-0LvQug!5e0!3m2!1sen!2sbg!4v1628772176805!5m2!1sen!2sbg",
+                            "9000, Bulgaria Osmi Primorski Polk 43",
+                            "0888 888 883",
+                            "shopping-cart-varna@gmail.com",
+                            "09:00 - 17:00",
+                            "10:30 - 16:30"
+                    ),
+                    new Contact(
+                            "Burgas",
+                            "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2941.927260424515!2d27.470166915695856!3d42.4930990346817!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40a694c73b5b063d%3A0xef53d6e5fa2881a4!2sul.%20%22Aleksandrovska%22%2026%2C%208000%20Burgas%20Center%2C%20Burgas!5e0!3m2!1sen!2sbg!4v1628772341245!5m2!1sen!2sbg",
+                            "8000 Alexandrovska Street 26",
+                            "0888 888 884",
+                            "shopping-cart-burgas@gmail.com",
+                            "09:40 - 17:40",
+                            "11:00 - 16:00"
+                    )
+            ));
+        }
+
         return null;
     }
 }
