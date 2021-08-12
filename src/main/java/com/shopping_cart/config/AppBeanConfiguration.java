@@ -34,7 +34,8 @@ public class AppBeanConfiguration {
             ContactRepository contactRepository) {
 
         if (productRepository.count() == 0) {
-            return args -> productRepository.saveAll(Arrays.asList(
+
+             productRepository.saveAll(Arrays.asList(
                     new Product(
                             "GLOCK 17 Gen5",
                             "The new frame design of the GLOCK 17 Gen5 removed the finger grooves for more versatility but still allows to easily customize its grip by using the different back straps. A flared mag-well and a cutout at the front of the frame give the user more speed during reloading when fractions of a second matter. A reversible enlarged magazine catch, changeable at user level as well as the ambidextrous slide stop lever accommodate left and right-handed operators. The rifling and the crown of the barrel were slightly modified for increased precision.",
@@ -67,7 +68,8 @@ public class AppBeanConfiguration {
         }
 
         if (contactRepository.count() == 0) {
-            return args -> contactRepository.saveAll(Arrays.asList(
+
+             contactRepository.saveAll(Arrays.asList(
                     new Contact(
                             "Sofia",
                             "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2932.3179396759338!2d23.329512315700562!3d42.69698822174912!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40aa8570f039ab5f%3A0x29f700e9fb9d4353!2sul.%20%22Moskovska%22%2033%2C%201000%20Sofia%20Center%2C%20Sofia!5e0!3m2!1sen!2sbg!4v1628771840855!5m2!1sen!2sbg",
@@ -79,8 +81,8 @@ public class AppBeanConfiguration {
                     ),
                     new Contact(
                             "Plovdiv",
-                            "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11843.306162162718!2d24.81106329166671!3d42.08976589098857!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14acd74dd7f37721%3A0xf428b989e4325212!2s4112%20Krumovo!5e0!3m2!1sen!2sbg!4v1628772050887!5m2!1sen!2sbg",
-                            "4009 Krumovo, Rodopi Municipality, Plovdiv District",
+                            "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2958.3108304311527!2d24.746848415449495!3d42.14363487920201!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14acd1bac53d66b3%3A0xa3e24860cb8d7ba4!2spl.%20%22Stefan%20Stambolov%22%201%2C%204000%20Tsentar%2C%20Plovdiv!5e0!3m2!1sen!2sbg!4v1628787167519!5m2!1sen!2sbg",
+                            "4000, pl.Stefan Stambolov 1",
                             "0888 888 882",
                             "shopping-cart-plovdiv@gmail.com",
                             "09:30 - 17:30",
@@ -106,7 +108,6 @@ public class AppBeanConfiguration {
                     )
             ));
         }
-
         return null;
     }
 }
