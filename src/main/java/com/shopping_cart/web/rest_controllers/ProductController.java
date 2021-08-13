@@ -45,6 +45,23 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/search/{keyword}")
+    public ResponseEntity<?> findProductsByKeyword(@PathVariable("keyword") String keyword) {
+
+        try {
+            /* Find product by keyword */
+            List<ProductServiceModel> productServiceModels = this.productService.findByKeyword(keyword);
+
+            /* If no such a product */
+            if (productServiceModels.size() == 0) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(PRODUCTS_SEARCH_NOT_FOUND);
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(productServiceModels);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
 
     @GetMapping("/all")
     // @PreAuthorize(HAS_ROLE_ADMIN_OR_USER)

@@ -27,6 +27,7 @@ public class ResponseMsgConstants {
     public static final String PRODUCT_NOT_FOUND = g.toJson("No such a product with this id");
     public static final String PRODUCTS_NOT_FOUND = g.toJson("No products found");
     public static final String PRODUCT_ALREADY_EXISTS = g.toJson("Product with the same name already exists");
+    public static final String PRODUCTS_SEARCH_NOT_FOUND = g.toJson("No such products by this keyword");
 
     public static final String NO_SUCH_PRODUCT_IN_CART = g.toJson("No such a product in cart");
     public static final String QUANTITY_MORE_THAN_AVAILABLE = g.toJson("You are trying to decrease with more then the available quantity");

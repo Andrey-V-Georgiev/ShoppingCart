@@ -89,4 +89,10 @@ public class ProductServiceImpl implements ProductService {
         this.productRepository.deleteById(id);
         return 1;
     }
+
+    @Override
+    public List<ProductServiceModel> findByKeyword(String keyword) {
+        return this.productRepository.findProductByKeyword(keyword).stream()
+                .map(p -> this.modelMapper.map(p, ProductServiceModel.class)).collect(Collectors.toList());
+    }
 }

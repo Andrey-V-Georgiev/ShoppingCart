@@ -16,4 +16,6 @@ public interface ProductService {
     ProductServiceModel editProduct(String id, ProductBindingModel productBindingModel);
 
     int removeById(String id);
+
+    List<ProductServiceModel> findByKeyword(String keyword);
 }
