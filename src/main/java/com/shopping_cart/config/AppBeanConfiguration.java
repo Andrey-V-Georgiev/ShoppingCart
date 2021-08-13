@@ -63,7 +63,21 @@ public class AppBeanConfiguration {
                             "https://i2.wp.com/shootarillusions.com/wp-content/uploads/2021/04/pix679079443.jpg?fit=1000%2C750&ssl=1",
                             BigDecimal.valueOf(100),
                             LocalDateTime.now()
-                    )
+                    ),
+                     new Product(
+                             "CZ Shadow 2 OR",
+                             "A sport special intended especially for fans of target shooting with large-calibre pistols, as well as anyone who agrees with the pistol guru, Jeff Cooper, that a double action trigger mechanism is an ingenious solution for a non-existent problem. (Although where the CZ 75 is concerned, Cooper himself admitted that the solution was indeed perfect). The single action variant of the phenomenal CZ SHADOW 2 model features a target style trigger blade made of aluminium alloy anodized blue and a combat style hammer with a large, weight-reducing hole. The trigger pull weight is set at 13 to 15 N, it can be decreased with a special adjustment or by swapping the trigger spring (we highly recommend such adjustments be carried out by a gunsmith or a specialized workshop). In comparison with the single action mode of the SA/DA model, this exclusively SA trigger mechanism also features an excellent and significantly shorter trigger travel (achieved by setting the first stage travel) and reset.",
+                             "https://content.osgnetworks.tv/gunsandammo/content/photos/CZ-Shadow-2-OR-770.jpg",
+                             BigDecimal.valueOf(100),
+                             LocalDateTime.now()
+                     ),
+                     new Product(
+                             "STI DVC-P DUO 9mm",
+                             "The STI DVC DUO (Dawson Universal Optic) system is designed to work with the Leupold Delta Point Pro, Trijicon RMR, and most popular optics that use the same mounting platform. 25 years of evolution and refinement resulted in the Omni. Nothing comes close.5″ Recoil Compensation. DUO (Dawson Universal Optic) with Fiber Optic Fron",
+                             "https://pistol-forum.com/attachment.php?attachmentid=53982&d=1589495813",
+                             BigDecimal.valueOf(100),
+                             LocalDateTime.now()
+                     )
             ));
         }
 
