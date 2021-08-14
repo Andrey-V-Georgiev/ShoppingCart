@@ -7,7 +7,6 @@ import java.util.List;
 
 public class CartViewModel {
 
-    private UserViewModel user;
     private List<CartProductServiceModel> cartProducts;
     private BigDecimal totalPriceProducts;
     private BigDecimal totalPriceAfterQuantityDiscount;
@@ -18,22 +17,13 @@ public class CartViewModel {
     public CartViewModel() {
     }
 
-    public CartViewModel(UserViewModel user, List<CartProductServiceModel> cartProducts, BigDecimal totalPriceProducts, BigDecimal totalPriceAfterQuantityDiscount, BigDecimal totalPriceAfterAllSumDiscounts, Double finalDiscountInPercent, BigDecimal finalDiscountInMoney) {
-        this.user = user;
+    public CartViewModel(List<CartProductServiceModel> cartProducts, BigDecimal totalPriceProducts, BigDecimal totalPriceAfterQuantityDiscount, BigDecimal totalPriceAfterAllSumDiscounts, Double finalDiscountInPercent, BigDecimal finalDiscountInMoney) {
         this.cartProducts = cartProducts;
         this.totalPriceProducts = totalPriceProducts;
         this.totalPriceAfterQuantityDiscount = totalPriceAfterQuantityDiscount;
         this.totalPriceAfterAllSumDiscounts = totalPriceAfterAllSumDiscounts;
         this.finalDiscountInPercent = finalDiscountInPercent;
         this.finalDiscountInMoney = finalDiscountInMoney;
-    }
-
-    public UserViewModel getUser() {
-        return user;
-    }
-
-    public void setUser(UserViewModel user) {
-        this.user = user;
     }
 
     public List<CartProductServiceModel> getCartProducts() {
