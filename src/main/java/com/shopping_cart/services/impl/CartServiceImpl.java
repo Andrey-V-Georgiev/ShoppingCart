@@ -64,7 +64,7 @@ public class CartServiceImpl implements CartService {
 
         } else if (quantityEnoughForDecrease) {
             /* Want to decrease the quantity without removing the product from cart */
-            this.decreaseProductQuantity(cartProductServiceModel, quantity);
+            this.decreaseProductQuantity(userId, cartProductServiceModel, quantity);
             return RemoveProductFromCart.PRODUCT_QUANTITY_DECREASED;
 
         } else {
@@ -74,13 +74,25 @@ public class CartServiceImpl implements CartService {
         }
     }
 
-    private void decreaseProductQuantity(
+    @Transactional
+    void decreaseProductQuantity(
+            String userId,
             CartProductServiceModel cartProductServiceModel,
             int quantity) {
 
         cartProductServiceModel.decreaseQuantity(quantity);
         cartProductServiceModel.calculateTotalFields();
         this.cartProductService.persistCartProduct(cartProductServiceModel);
+
+        /* Find user cart */
+        CartServiceModel cartServiceModel = this.cartRepository
+                .findCartByUserId(userId).map(o -> this.modelMapper.map(o, CartServiceModel.class)).orElse(null);
+
+        /* Calculate total fields and save */
+        cartServiceModel.calculateTotalFields();
+
+        /* Save changes to DB */
+        this.cartRepository.saveAndFlush(this.modelMapper.map(cartServiceModel, Cart.class));
     }
 
     @Override
@@ -107,7 +119,7 @@ public class CartServiceImpl implements CartService {
             this.cartProductService.removeById(cartProduct.getId());
         }
         /* Set empty list to cart */
-        cartServiceModel.setCartProducts(new ArrayList<>());
+        cartServiceModel.reset();
 
         /* Save changes */
         this.cartRepository.saveAndFlush(this.modelMapper.map(cartServiceModel, Cart.class));

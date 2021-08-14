@@ -65,6 +65,15 @@ public class CartServiceModel extends BaseEntity {
                 .divide(onePercentOfTotalPriceProducts, RoundingMode.HALF_DOWN).doubleValue();
     }
 
+    public void reset() {
+        this.cartProducts = new ArrayList<>();
+        this.totalPriceProducts = BigDecimal.ZERO;
+        this.totalPriceAfterQuantityDiscount = BigDecimal.ZERO;
+        this.totalPriceAfterAllSumDiscounts = BigDecimal.ZERO;
+        this.finalDiscountInPercent = 0.0;
+        this.finalDiscountInMoney = BigDecimal.ZERO;
+    }
+
     public void addCartProduct(CartProductServiceModel cartProductServiceModel) {
         this.cartProducts.add(cartProductServiceModel);
     }
