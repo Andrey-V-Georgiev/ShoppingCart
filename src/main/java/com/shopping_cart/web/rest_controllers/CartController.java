@@ -171,7 +171,7 @@ public class CartController {
         }
     }
 
-    @PostMapping("/checkout")
+    @DeleteMapping("/checkout")
     @PreAuthorize(HAS_ROLE_ADMIN_OR_USER)
     public ResponseEntity<?> checkoutCart() {
 
@@ -186,6 +186,7 @@ public class CartController {
 
             return ResponseEntity.status(HttpStatus.OK).body(CART_CHECKOUT);
         } catch (Exception e) {
+            System.out.println(e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(FRIENDLY_INTERNAL_SERVER_ERROR);
         }
     }
