@@ -7,6 +7,7 @@ import com.shopping_cart.models.service_models.UserServiceModel;
 import com.shopping_cart.models.view_models.UserViewModel;
 import com.shopping_cart.services.AuthService;
 import com.shopping_cart.services.UserService;
+import com.shopping_cart.utils.ValidationMsgUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,20 +30,20 @@ public class AuthController {
     private final AuthService authService;
     private final UserService userService;
     private final ModelMapper modelMapper;
+    private final ValidationMsgUtil validationMsgUtil;
 
     @Autowired
-    public AuthController(AuthService authService, UserService userService, ModelMapper modelMapper) {
+    public AuthController(AuthService authService, UserService userService, ModelMapper modelMapper, ValidationMsgUtil validationMsgUtil) {
         this.authService = authService;
         this.userService = userService;
         this.modelMapper = modelMapper;
+        this.validationMsgUtil = validationMsgUtil;
     }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(
             @Valid @RequestBody UserRegisterBindingModel userRegisterBindingModel,
             BindingResult bindingResult) {
-
-        System.out.println("HIT register");
 
         /* Check does password and confirmedPassword match */
         if (!userRegisterBindingModel.getPassword().equals(userRegisterBindingModel.getConfirmPassword())) {
@@ -52,7 +53,7 @@ public class AuthController {
             /* Validate fields requirements */
             if (bindingResult.hasErrors()) {
                 List<ObjectError> allErrors = bindingResult.getAllErrors();
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(allErrors);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(this.validationMsgUtil.parse(allErrors));
             }
             /* Save to DB */
             UserServiceModel userServiceModel = this.userService.registerUser(userRegisterBindingModel);
@@ -78,7 +79,7 @@ public class AuthController {
             /* Validate fields requirements */
             if (bindingResult.hasErrors()) {
                 List<ObjectError> allErrors = bindingResult.getAllErrors();
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(allErrors);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(this.validationMsgUtil.parse(allErrors));
             }
             /* Check username and password are valid */
             UserServiceModel userServiceModel = this.userService.findUserByUsernameAndPassword(

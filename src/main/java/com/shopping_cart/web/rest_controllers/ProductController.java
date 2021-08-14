@@ -3,6 +3,7 @@ package com.shopping_cart.web.rest_controllers;
 import com.shopping_cart.models.binding_models.ProductBindingModel;
 import com.shopping_cart.models.service_models.ProductServiceModel;
 import com.shopping_cart.services.ProductService;
+import com.shopping_cart.utils.ValidationMsgUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +23,12 @@ import static com.shopping_cart.constants.UserRoleConstants.*;
 public class ProductController {
 
     private final ProductService productService;
+    private final ValidationMsgUtil validationMsgUtil;
 
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, ValidationMsgUtil validationMsgUtil) {
         this.productService = productService;
+        this.validationMsgUtil = validationMsgUtil;
     }
 
     @GetMapping("/details/{id}")
@@ -93,7 +96,7 @@ public class ProductController {
             /* Validate input */
             if (bindingResult.hasErrors()) {
                 List<ObjectError> allErrors = bindingResult.getAllErrors();
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(allErrors);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(this.validationMsgUtil.parse(allErrors));
             }
             /* Create new product */
             ProductServiceModel productServiceModel = this.productService.addProduct(productBindingModel);
@@ -119,7 +122,7 @@ public class ProductController {
             /* Validate input */
             if (bindingResult.hasErrors()) {
                 List<ObjectError> allErrors = bindingResult.getAllErrors();
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(allErrors);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(this.validationMsgUtil.parse(allErrors));
             }
             /* Edit product */
             ProductServiceModel productServiceModel = this.productService.editProduct(id, productBindingModel);

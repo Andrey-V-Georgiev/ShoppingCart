@@ -21,7 +21,7 @@ public class ResponseMsgConstants {
     /* Negative messages */
 
     public static final String WRONG_USERNAME_OR_PASSWORD = g.toJson("Wrong username or password");
-    public static final String CONFIRMED_PASSWORD_NOT_MATCH = g.toJson("Confirmed password doesn't match");
+    public static final String CONFIRMED_PASSWORD_NOT_MATCH = g.toJson("Confirmed password does not match");
     public static final String USERNAME_ALREADY_IN_USE = g.toJson("This username is already in use");
 
     public static final String PRODUCT_NOT_FOUND = g.toJson("No such a product with this id");
@@ -33,5 +33,5 @@ public class ResponseMsgConstants {
     public static final String QUANTITY_MORE_THAN_AVAILABLE = g.toJson("You are trying to decrease with more then the available quantity");
     public static final String CART_NOT_FOUND = g.toJson("Cart not found");
 
-    public static final String FRIENDLY_INTERNAL_SERVER_ERROR = g.toJson("Your request hasn't been processed, please try again");
+    public static final String FRIENDLY_INTERNAL_SERVER_ERROR = g.toJson("Your request has not been processed, please try again");
 }

@@ -6,6 +6,7 @@ import com.shopping_cart.models.service_models.CartServiceModel;
 import com.shopping_cart.models.service_models.ProductServiceModel;
 import com.shopping_cart.models.view_models.CartViewModel;
 import com.shopping_cart.services.CartService;
+import com.shopping_cart.utils.ValidationMsgUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,11 +29,13 @@ public class CartController {
 
     private final ModelMapper modelMapper;
     private final CartService cartService;
+    private final ValidationMsgUtil validationMsgUtil;
 
     @Autowired
-    public CartController(ModelMapper modelMapper, CartService cartService) {
+    public CartController(ModelMapper modelMapper, CartService cartService, ValidationMsgUtil validationMsgUtil) {
         this.modelMapper = modelMapper;
         this.cartService = cartService;
+        this.validationMsgUtil = validationMsgUtil;
     }
 
     @GetMapping("/")
@@ -68,7 +71,7 @@ public class CartController {
             /* Validate input */
             if (bindingResult.hasErrors()) {
                 List<ObjectError> allErrors = bindingResult.getAllErrors();
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(allErrors);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(this.validationMsgUtil.parse(allErrors));
             }
             /* Add the product to cart */
             ProductServiceModel productServiceModel = this.cartService
@@ -95,7 +98,7 @@ public class CartController {
             /* Validate input */
             if (bindingResult.hasErrors()) {
                 List<ObjectError> allErrors = bindingResult.getAllErrors();
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(allErrors);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(this.validationMsgUtil.parse(allErrors));
             }
             /* Remove product by id */
             RemoveProductFromCart deletionResult = this.cartService
