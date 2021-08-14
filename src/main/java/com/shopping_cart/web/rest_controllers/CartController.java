@@ -81,7 +81,7 @@ public class CartController {
             if (productServiceModel == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(PRODUCT_NOT_FOUND);
             }
-            return ResponseEntity.status(HttpStatus.OK).body(productServiceModel);
+            return ResponseEntity.status(HttpStatus.OK).body(PRODUCT_ADDED_TO_CART);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(FRIENDLY_INTERNAL_SERVER_ERROR);
         }

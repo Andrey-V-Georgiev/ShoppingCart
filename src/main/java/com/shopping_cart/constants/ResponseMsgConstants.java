@@ -14,6 +14,7 @@ public class ResponseMsgConstants {
     public static final String PRODUCT_QUANTITY_DECREASED = g.toJson("Quantity of this product was decreased");
     public static final String PRODUCT_REMOVED_FROM_CART = g.toJson("Product was removed from cart");
     public static final String PRODUCT_REMOVED = g.toJson("Product was successfully removed");
+    public static final String PRODUCT_ADDED_TO_CART = g.toJson("Product was successfully added to cart");
 
     public static final String CART_EMPTY_SUCCESS = g.toJson("All products are successfully removed from cart");
     public static final String CART_ALREADY_EMPTY = g.toJson("Your cart is already empty");

@@ -27,8 +27,6 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         try {
             if (requestHasAuthorizationHeader(request)) {
 
-                System.out.println();
-
                 Claims claims = parseTokenFromRequest(request);
                 boolean claimsHaveUserId = claims.get(CLAIMS_JTI) != null;
                 boolean claimsHaveUserAuthorities = claims.get(CLAIMS_AUTHORITIES) != null;
