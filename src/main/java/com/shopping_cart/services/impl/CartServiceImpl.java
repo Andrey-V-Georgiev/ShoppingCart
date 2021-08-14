@@ -40,7 +40,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public RemoveProductFromCart removeProduct(String productId, String userId, int quantity) {
+    public RemoveProductFromCart decreaseProductCount(String productId, String userId, int quantity) {
 
         /* Get the cartProducts of user cart */
         CartServiceModel cartServiceModel = this.findCartByUserId(userId);
@@ -83,7 +83,8 @@ public class CartServiceImpl implements CartService {
         this.cartProductService.persistCartProduct(cartProductServiceModel);
     }
 
-    private void removeProductFromCartList(
+    @Override
+    public void removeProductFromCartList(
             CartProductServiceModel cartProductServiceModel,
             List<CartProductServiceModel> cartProducts,
             CartServiceModel cartServiceModel) {
@@ -122,6 +123,7 @@ public class CartServiceImpl implements CartService {
         /* If cart is empty return true */
         return cartProducts.size() == 0;
     }
+
 
     @Override
     public ProductServiceModel addProductToCart(String userId, String productId, int quantity) {

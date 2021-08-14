@@ -25,7 +25,7 @@ public class ResponseMsgConstants {
     public static final String CONFIRMED_PASSWORD_NOT_MATCH = g.toJson("Confirmed password does not match");
     public static final String USERNAME_ALREADY_IN_USE = g.toJson("This username is already in use");
 
-    public static final String PRODUCT_NOT_FOUND = g.toJson("No such a product with this id");
+    public static final String PRODUCT_NOT_FOUND = g.toJson("No such a product");
     public static final String PRODUCTS_NOT_FOUND = g.toJson("No products found");
     public static final String PRODUCT_ALREADY_EXISTS = g.toJson("Product with the same name already exists");
     public static final String PRODUCTS_SEARCH_NOT_FOUND = g.toJson("No such products by this keyword");
