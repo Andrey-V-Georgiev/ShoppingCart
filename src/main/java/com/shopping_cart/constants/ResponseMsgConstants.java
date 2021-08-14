@@ -17,7 +17,7 @@ public class ResponseMsgConstants {
     public static final String PRODUCT_ADDED_TO_CART = g.toJson("Product was successfully added to cart");
 
     public static final String CART_EMPTY_SUCCESS = g.toJson("All products are successfully removed from cart");
-    public static final String CART_ALREADY_EMPTY = g.toJson("Your cart is already empty");
+    public static final String CART_CHECKOUT = g.toJson("Your payment was successful");
 
     /* Negative messages */
 
@@ -35,4 +35,8 @@ public class ResponseMsgConstants {
     public static final String CART_NOT_FOUND = g.toJson("Cart not found");
 
     public static final String FRIENDLY_INTERNAL_SERVER_ERROR = g.toJson("Your request has not been processed, please try again");
+
+    public static final String CART_ALREADY_EMPTY = g.toJson("Your cart is already empty");
+    public static final String CART_IS_EMPTY = g.toJson("Your cart is empty");
+
 }

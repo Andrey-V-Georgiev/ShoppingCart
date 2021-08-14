@@ -170,4 +170,23 @@ public class CartController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(FRIENDLY_INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PostMapping("/checkout")
+    @PreAuthorize(HAS_ROLE_ADMIN_OR_USER)
+    public ResponseEntity<?> checkoutCart() {
+
+        String userId = String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        try {
+            /* Check for cart already empty */
+            if (this.cartService.checkCartIsEmpty(userId)) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(CART_IS_EMPTY);
+            }
+            /* Remove all products from cart */
+            this.cartService.emptyTheCart(userId);
+
+            return ResponseEntity.status(HttpStatus.OK).body(CART_CHECKOUT);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(FRIENDLY_INTERNAL_SERVER_ERROR);
+        }
+    }
 }
