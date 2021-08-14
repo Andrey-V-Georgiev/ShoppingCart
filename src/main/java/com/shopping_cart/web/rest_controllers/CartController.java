@@ -87,7 +87,7 @@ public class CartController {
         }
     }
 
-    @DeleteMapping("/remove")
+    @PutMapping("/remove")
     @PreAuthorize(HAS_ROLE_ADMIN_OR_USER)
     public ResponseEntity<?> removeProductFromCart(
             @Valid @RequestBody CartBindingModel cartBindingModel,
