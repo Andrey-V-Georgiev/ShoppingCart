@@ -20,7 +20,7 @@ public class ValidationMsgUtilImpl implements ValidationMsgUtil {
 
         if (rawMsg.length() > 79) {
             String shortMsg = sb.substring(0, 80);
-            return String.format("Errors: %s ...", shortMsg);
+            return String.format("%s ...", shortMsg);
         } else {
             String fullMsg = sb.substring(0, rawMsg.length() - 2);
             return String.format("Errors: %s", fullMsg);
