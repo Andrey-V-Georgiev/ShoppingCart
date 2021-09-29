@@ -31,13 +31,10 @@ public class CartProductServiceImpl implements CartProductService {
     @Override
     public CartProductServiceModel createCartProduct(ProductServiceModel productServiceModel, int quantity) {
 
-        /* Create new and set the fields */
         CartProductServiceModel cartProductServiceModel = new CartProductServiceModel();
         cartProductServiceModel.setProduct(productServiceModel);
         cartProductServiceModel.setQuantity(quantity);
         cartProductServiceModel.calculateTotalFields();
-
-        /* Save the cartProductServiceModel to DB */
         CartProduct cartProductSaved = this.cartProductRepository
                 .saveAndFlush(this.modelMapper.map(cartProductServiceModel, CartProduct.class));
 

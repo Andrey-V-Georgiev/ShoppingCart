@@ -34,9 +34,7 @@ public class AuthServiceImpl implements AuthService {
 
     public String createJwtToken(String userId, String userRole) {
 
-        List<GrantedAuthority> grantedAuthorities = AuthorityUtils
-                .commaSeparatedStringToAuthorityList(userRole.toString());
-
+        List<GrantedAuthority> grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList(userRole);
         List<String> authorities = grantedAuthorities.stream()
                 .map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 
@@ -62,14 +60,11 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public BlackTokenServiceModel createBlackToken(String userId, String token) {
 
-        /* Create new service model */
         BlackTokenServiceModel blackTokenServiceModel = new BlackTokenServiceModel(userId, token);
         blackTokenServiceModel.setAddedOn(LocalDateTime.now());
 
-        /* Map the service model to entity and save it to DB */
         BlackToken blackToken = this.blackTokenRepository
                 .saveAndFlush(this.modelMapper.map(blackTokenServiceModel, BlackToken.class));
-
         return this.modelMapper.map(blackToken, BlackTokenServiceModel.class);
     }
 }

@@ -31,33 +31,21 @@ public class AuthInterceptor implements HandlerInterceptor {
         boolean hasAuthorizationHeader = request.getHeader(AUTHORIZATION_HEADER) != null;
 
         if (userIdIsValid && hasAuthorizationHeader) {
-
-            /* Get the user */
             UserServiceModel userServiceModel = this.userService.findUserById(userId);
-
-            /* Non-existing user with this ID */
             if (userServiceModel == null) {
                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
                 return false;
             }
-
-            /* Obtain the naked token from the request header */
             String nakedToken = request.getHeader(AUTHORIZATION_HEADER).replace(AUTHORIZATION_PREFIX, "");
-
-            /* Compare user current token and the request token */
             if (!userServiceModel.getToken().equals(nakedToken)) {
                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
                 return false;
             }
-
-            /* Check the blackList for this token */
             Boolean blackTokenExist = this.authService.blackTokenExist(nakedToken);
             if(blackTokenExist) {
                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
                 return false;
             }
-
-            /* If everything is fine let the request forward */
             return true;
         }
         /* If no hasUserId or hasAuthorizationHeader (register and guest) */

@@ -26,9 +26,7 @@ public class ContactController {
 
     @GetMapping("/all")
     public ResponseEntity<?> findAllContacts() {
-
         try {
-            /* Find all contacts */
             List<ContactServiceModel> contactServiceModelList = this.contactService.findAll();
 
             return ResponseEntity.status(HttpStatus.OK).body(contactServiceModelList);

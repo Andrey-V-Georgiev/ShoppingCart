@@ -1,6 +1,5 @@
 package com.shopping_cart.web.rest_controllers;
 
-import com.google.gson.Gson;
 import com.shopping_cart.models.binding_models.UserLoginBindingModel;
 import com.shopping_cart.models.binding_models.UserRegisterBindingModel;
 import com.shopping_cart.models.service_models.UserServiceModel;
@@ -45,26 +44,19 @@ public class AuthController {
             @Valid @RequestBody UserRegisterBindingModel userRegisterBindingModel,
             BindingResult bindingResult) {
 
-        /* Check does password and confirmedPassword match */
         if (!userRegisterBindingModel.getPassword().equals(userRegisterBindingModel.getConfirmPassword())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(CONFIRMED_PASSWORD_NOT_MATCH);
         }
         try {
-            /* Validate fields requirements */
             if (bindingResult.hasErrors()) {
                 List<ObjectError> allErrors = bindingResult.getAllErrors();
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(this.validationMsgUtil.parse(allErrors));
             }
-            /* Save to DB */
             UserServiceModel userServiceModel = this.userService.registerUser(userRegisterBindingModel);
-
-            /* If username already exist */
             if (userServiceModel == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(USERNAME_ALREADY_IN_USE);
             }
-            Gson g = new Gson();
             return ResponseEntity.status(HttpStatus.CREATED).body(REGISTER_SUCCESS);
-
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(FRIENDLY_INTERNAL_SERVER_ERROR);
         }
@@ -76,50 +68,37 @@ public class AuthController {
             BindingResult bindingResult) {
 
         try {
-            /* Validate fields requirements */
             if (bindingResult.hasErrors()) {
                 List<ObjectError> allErrors = bindingResult.getAllErrors();
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(this.validationMsgUtil.parse(allErrors));
             }
-            /* Check username and password are valid */
             UserServiceModel userServiceModel = this.userService.findUserByUsernameAndPassword(
                     userLoginBindingModel.getUsername(),
                     userLoginBindingModel.getPassword());
-
             if (userServiceModel == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(WRONG_USERNAME_OR_PASSWORD);
             }
-
-            /* Generate JWT token and update in DB */
             String newToken = this.authService.createJwtToken(userServiceModel.getId(), userServiceModel.getRole());
             String newNakedToken = newToken.replace(AUTHORIZATION_PREFIX, "");
             this.userService.updateUserToken(newNakedToken, userServiceModel.getId());
 
-
-            /* Prepare UserLoginViewModel for FE */
             UserViewModel userViewModel = this.modelMapper.map(userServiceModel, UserViewModel.class);
             userViewModel.setToken(newToken);
 
             return ResponseEntity.ok().body(userViewModel);
-
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(FRIENDLY_INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(
-            @RequestHeader(name = "Authorization") String token) {
-
+    public ResponseEntity<?> logout(@RequestHeader(name = "Authorization") String token) {
         try {
             String userId = String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
             String nakedToken = token.replace(AUTHORIZATION_PREFIX, "");
-
-            /* Invalidate the current token , saving it to the blackList */
             this.authService.createBlackToken(userId, nakedToken);
 
             return ResponseEntity.status(HttpStatus.OK).body(LOGOUT_SUCCESS);
-
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(FRIENDLY_INTERNAL_SERVER_ERROR);
         }

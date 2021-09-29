@@ -45,14 +45,10 @@ public class CartController {
 
         String userId = String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         try {
-            /* Find cart */
             CartServiceModel cartServiceModel = this.cartService.findCartByUserId(userId);
-
-            /* If cannot find cart */
             if (cartServiceModel == null) {
                 return ResponseEntity.status(HttpStatus.OK).body(CART_NOT_FOUND);
             }
-            /* Return only necessary fields */
             CartViewModel cartViewModel = this.modelMapper.map(cartServiceModel, CartViewModel.class);
 
             return ResponseEntity.status(HttpStatus.OK).body(cartViewModel);
@@ -69,16 +65,12 @@ public class CartController {
 
         String userId = String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         try {
-            /* Validate input */
             if (bindingResult.hasErrors()) {
                 List<ObjectError> allErrors = bindingResult.getAllErrors();
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(this.validationMsgUtil.parse(allErrors));
             }
-            /* Add the product to cart */
             ProductServiceModel productServiceModel = this.cartService
                     .addProductToCart(userId, cartBindingModel.getProductId(), cartBindingModel.getQuantity());
-
-            /* If no such a product */
             if (productServiceModel == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(PRODUCT_NOT_FOUND);
             }
@@ -96,25 +88,19 @@ public class CartController {
 
         String userId = String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         try {
-            /* Validate input */
             if (bindingResult.hasErrors()) {
                 List<ObjectError> allErrors = bindingResult.getAllErrors();
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(this.validationMsgUtil.parse(allErrors));
             }
-            /* Decrease quantity by id */
             RemoveProductFromCart decreaseResult = this.cartService
                     .decreaseProductCount(cartBindingModel.getProductId(), userId, cartBindingModel.getQuantity());
-
             switch (decreaseResult) {
                 case PRODUCT_NOT_FOUND:
                     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(NO_SUCH_PRODUCT_IN_CART);
-
                 case QUANTITY_MORE_THAN_AVAILABLE:
                     return ResponseEntity.status(HttpStatus.FORBIDDEN).body(QUANTITY_MORE_THAN_AVAILABLE);
-
                 case PRODUCT_QUANTITY_DECREASED:
                     return ResponseEntity.status(HttpStatus.OK).body(PRODUCT_QUANTITY_DECREASED);
-
                 default:
                     return ResponseEntity.status(HttpStatus.OK).body(PRODUCT_REMOVED_FROM_CART);
             }
@@ -129,24 +115,16 @@ public class CartController {
 
         String userId = String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         try {
-            /* Get user cart */
             CartServiceModel cartServiceModel = this.cartService.findCartByUserId(userId);
-
-            /* Find the product for remove */
             CartProductServiceModel cartProductServiceModel = cartServiceModel.getCartProducts()
                     .stream().filter(cp -> cp.getId().equals(cartProductId)).findFirst().orElse(null);
-
-            /* If no such a product */
             if (cartProductServiceModel == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(PRODUCT_NOT_FOUND);
             }
-
-            /* Remove from cart */
             this.cartService.removeProductFromCartList(
                     cartProductServiceModel, cartServiceModel.getCartProducts(), cartServiceModel);
 
             return ResponseEntity.status(HttpStatus.OK).body(PRODUCT_REMOVED_FROM_CART);
-
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(FRIENDLY_INTERNAL_SERVER_ERROR);
         }
@@ -158,11 +136,9 @@ public class CartController {
 
         String userId = String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         try {
-            /* Check for cart already empty */
             if (this.cartService.checkCartIsEmpty(userId)) {
                 return ResponseEntity.status(HttpStatus.OK).body(CART_ALREADY_EMPTY);
             }
-            /* Remove all products from cart */
             this.cartService.emptyTheCart(userId);
 
             return ResponseEntity.status(HttpStatus.OK).body(CART_EMPTY_SUCCESS);
@@ -177,16 +153,13 @@ public class CartController {
 
         String userId = String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         try {
-            /* Check for cart already empty */
             if (this.cartService.checkCartIsEmpty(userId)) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(CART_IS_EMPTY);
             }
-            /* Remove all products from cart */
             this.cartService.emptyTheCart(userId);
 
             return ResponseEntity.status(HttpStatus.OK).body(CART_CHECKOUT);
         } catch (Exception e) {
-            System.out.println(e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(FRIENDLY_INTERNAL_SERVER_ERROR);
         }
     }

@@ -38,15 +38,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserServiceModel registerUser(UserRegisterBindingModel userRegisterBindingModel) {
-
-        /* Check if such username already exist */
         UserServiceModel userServiceModel = this.userRepository.findUserByUsername(userRegisterBindingModel.getUsername())
                 .map(o -> this.modelMapper.map(o, UserServiceModel.class))
                 .orElse(null);
         if (userServiceModel != null) {
             return null;
         }
-        /* Construct the new user */
         long repoCount = this.userRepository.count();
         UserServiceModel userServiceModelNew = new UserServiceModel(
                 userRegisterBindingModel.getUsername(),
@@ -56,23 +53,16 @@ public class UserServiceImpl implements UserService {
         userServiceModelNew.setRole(repoCount > 0 ? ROLE_USER : ROLE_ADMIN);
         userServiceModelNew.setRegistrationDate(LocalDateTime.now());
 
-        /* Save the user to DB */
         User userUnsaved = this.modelMapper.map(userServiceModelNew, User.class);
         User userSaved = this.userRepository.saveAndFlush(userUnsaved);
-
-        /* Create and attach new Cart to user */
         Cart cart = new Cart(userSaved);
-        this.cartRepository.saveAndFlush(cart);
 
+        this.cartRepository.saveAndFlush(cart);
         return this.modelMapper.map(userSaved, UserServiceModel.class);
     }
 
     @Override
     public UserServiceModel findUserByUsernameAndPassword(String username, String password) {
-
-        System.out.println(username);
-        System.out.println(password);
-
         List<UserServiceModel> userServiceModels = this.userRepository.findAllByUsername(username)
                 .stream()
                 .map(o -> o.get())
@@ -85,7 +75,7 @@ public class UserServiceImpl implements UserService {
                 return userServiceModel;
             }
         }
-        /* If no such user return null */
+        /*  no such user return null */
         return null;
     }
 
