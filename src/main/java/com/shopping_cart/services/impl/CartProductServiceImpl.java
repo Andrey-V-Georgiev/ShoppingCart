@@ -9,7 +9,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
+import static com.shopping_cart.constants.CommonConstants.QUANTITY_ONE;
+
 @Service
+@Transactional
 public class CartProductServiceImpl implements CartProductService {
 
     private final ModelMapper modelMapper;
@@ -22,29 +27,15 @@ public class CartProductServiceImpl implements CartProductService {
     }
 
     @Override
-    public CartProductServiceModel findByProductId(String productId) {
-        return this.cartProductRepository
-                .findCartProductByProductId(productId)
-                .map(o -> this.modelMapper.map(o, CartProductServiceModel.class)).orElse(null);
-    }
-
-    @Override
-    public CartProductServiceModel createCartProduct(ProductServiceModel productServiceModel, int quantity) {
+    public CartProductServiceModel createCartProduct(ProductServiceModel productServiceModel) {
 
         CartProductServiceModel cartProductServiceModel = new CartProductServiceModel();
         cartProductServiceModel.setProduct(productServiceModel);
-        cartProductServiceModel.setQuantity(quantity);
-        cartProductServiceModel.calculateTotalFields();
+        cartProductServiceModel.setQuantity(QUANTITY_ONE);
+
         CartProduct cartProductSaved = this.cartProductRepository
                 .saveAndFlush(this.modelMapper.map(cartProductServiceModel, CartProduct.class));
 
-        return this.modelMapper.map(cartProductSaved, CartProductServiceModel.class);
-    }
-
-    @Override
-    public CartProductServiceModel persistCartProduct(CartProductServiceModel cartProductServiceModel) {
-        CartProduct cartProductSaved = this.cartProductRepository
-                .saveAndFlush(this.modelMapper.map(cartProductServiceModel, CartProduct.class));
         return this.modelMapper.map(cartProductSaved, CartProductServiceModel.class);
     }
 

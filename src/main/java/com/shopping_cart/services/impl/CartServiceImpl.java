@@ -17,6 +17,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 public class CartServiceImpl implements CartService {
 
     private final ModelMapper modelMapper;
@@ -39,52 +40,63 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public RemoveProductFromCart decreaseProductCount(String productId, String userId, int quantity) {
+    public ProductServiceModel addProductToCart(String userId, String productId) {
 
+        ProductServiceModel productServiceModel = this.productService.findById(productId);
+        if (productServiceModel == null) {
+            return null;
+        }
         CartServiceModel cartServiceModel = this.findCartByUserId(userId);
-        List<CartProductServiceModel> cartProducts = cartServiceModel.getCartProducts();
-        CartProductServiceModel cartProductServiceModel = cartProducts
-                .stream().filter(cp -> cp.getProduct().getId().equals(productId)).findFirst().orElse(null);
+        CartProductServiceModel cartProductServiceModel = cartServiceModel.getCartProducts()
+                .stream()
+                .filter(cp -> cp.getProduct().getId() == productId)
+                .findFirst()
+                .orElse(null);
+
+        if (cartProductServiceModel != null) {
+            cartProductServiceModel.increaseQuantity();
+        } else {
+            CartProductServiceModel cartProductServiceModelNew = this.cartProductService.createCartProduct(productServiceModel);
+            cartServiceModel.addCartProduct(cartProductServiceModelNew);
+        }
+        this.cartRepository.saveAndFlush(this.modelMapper.map(cartServiceModel, Cart.class));
+        return productServiceModel;
+    }
+
+    @Override
+    public RemoveProductFromCart decreaseProductCount(String productId, String userId) {
+
+        ProductServiceModel productServiceModel = this.productService.findById(productId);
+        if (productServiceModel == null) {
+            return null;
+        }
+        CartServiceModel cartServiceModel = this.findCartByUserId(userId);
+        CartProductServiceModel cartProductServiceModel = cartServiceModel.getCartProducts()
+                .stream()
+                .filter(cp -> cp.getProduct().getId() == productId)
+                .findFirst()
+                .orElse(null);
+
         if (cartProductServiceModel == null) {
             return RemoveProductFromCart.PRODUCT_NOT_FOUND;
         }
-        boolean quantityMoreThanAvailable = cartProductServiceModel.getQuantity() < quantity;
-        boolean quantityEnoughForDecrease = cartProductServiceModel.getQuantity() > quantity;
-        if (quantityMoreThanAvailable) {
-            return RemoveProductFromCart.QUANTITY_MORE_THAN_AVAILABLE;
-        } else if (quantityEnoughForDecrease) {
-            this.decreaseProductQuantity(userId, cartProductServiceModel, quantity);
+        boolean quantityDecreased = cartProductServiceModel.decreaseQuantity();
+        if (quantityDecreased) {
+            this.cartRepository.saveAndFlush(this.modelMapper.map(cartServiceModel, Cart.class));
             return RemoveProductFromCart.PRODUCT_QUANTITY_DECREASED;
         } else {
-            this.removeProductFromCartList(cartProductServiceModel, cartProducts, cartServiceModel);
-            return RemoveProductFromCart.DEFAULT;
+            this.removeProductFromCartList(cartProductServiceModel, cartServiceModel);
+            return RemoveProductFromCart.PRODUCT_REMOVED_FROM_CART;
         }
-    }
-
-    @Transactional
-    void decreaseProductQuantity(
-            String userId,
-            CartProductServiceModel cartProductServiceModel,
-            int quantity) {
-
-        cartProductServiceModel.decreaseQuantity(quantity);
-        cartProductServiceModel.calculateTotalFields();
-        this.cartProductService.persistCartProduct(cartProductServiceModel);
-        CartServiceModel cartServiceModel = this.cartRepository
-                .findCartByUserId(userId).map(o -> this.modelMapper.map(o, CartServiceModel.class)).orElse(null);
-        cartServiceModel.calculateTotalFields();
-        this.cartRepository.saveAndFlush(this.modelMapper.map(cartServiceModel, Cart.class));
     }
 
     @Override
     public void removeProductFromCartList(
             CartProductServiceModel cartProductServiceModel,
-            List<CartProductServiceModel> cartProducts,
             CartServiceModel cartServiceModel) {
 
         this.cartProductService.removeById(cartProductServiceModel.getId());
-        cartProducts.remove(cartProductServiceModel);
-        cartServiceModel.calculateTotalFields();
+        cartServiceModel.getCartProducts().remove(cartProductServiceModel);
         this.cartRepository.saveAndFlush(this.modelMapper.map(cartServiceModel, Cart.class));
     }
 
@@ -104,47 +116,5 @@ public class CartServiceImpl implements CartService {
         CartServiceModel cartServiceModel = this.findCartByUserId(userId);
         List<CartProductServiceModel> cartProducts = cartServiceModel.getCartProducts();
         return cartProducts.size() == 0;
-    }
-
-
-    @Override
-    public ProductServiceModel addProductToCart(String userId, String productId, int quantity) {
-        ProductServiceModel productServiceModel = this.productService.findById(productId);
-        if (productServiceModel == null) {
-            return null;
-        }
-        CartProductServiceModel cartProductServiceModel = this.cartProductCreateOrUpdate(productId, quantity, productServiceModel);
-        this.updateCart(userId, cartProductServiceModel);
-        return productServiceModel;
-    }
-
-    private CartProductServiceModel cartProductCreateOrUpdate(
-            String productId,
-            Integer quantity,
-            ProductServiceModel productServiceModel) {
-
-        CartProductServiceModel cartProductServiceModelDB = this.cartProductService.findByProductId(productId);
-        CartProductServiceModel cartProductServiceModel;
-        if (cartProductServiceModelDB != null) {
-            cartProductServiceModelDB.addQuantity(quantity);
-            cartProductServiceModelDB.calculateTotalFields();
-            cartProductServiceModel = this.cartProductService.persistCartProduct(cartProductServiceModelDB);
-        } else {
-            cartProductServiceModel = this.cartProductService.createCartProduct(productServiceModel, quantity);
-        }
-        return cartProductServiceModel;
-    }
-
-    @Transactional
-    void updateCart(String userId, CartProductServiceModel cartProductServiceModel) {
-        CartServiceModel cartServiceModel = this.cartRepository
-                .findCartByUserId(userId).map(o -> this.modelMapper.map(o, CartServiceModel.class)).orElse(null);
-        assert cartServiceModel != null;
-        boolean alreadyContainThisProduct = cartServiceModel.getCartProducts().contains(cartProductServiceModel);
-        if (!alreadyContainThisProduct) {
-            cartServiceModel.addCartProduct(cartProductServiceModel);
-        }
-        cartServiceModel.calculateTotalFields();
-        this.cartRepository.saveAndFlush(this.modelMapper.map(cartServiceModel, Cart.class));
     }
 }

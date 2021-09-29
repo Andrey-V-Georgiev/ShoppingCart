@@ -5,11 +5,7 @@ import com.shopping_cart.models.service_models.ProductServiceModel;
 
 public interface CartProductService {
 
-    CartProductServiceModel createCartProduct(ProductServiceModel productServiceModel, int quantity);
-
-    CartProductServiceModel findByProductId(String productId);
-
-    CartProductServiceModel persistCartProduct(CartProductServiceModel cartProductServiceModel);
+    CartProductServiceModel createCartProduct(ProductServiceModel productServiceModel);
 
     void removeById(String id);
 }

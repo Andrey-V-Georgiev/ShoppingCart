@@ -1,23 +1,20 @@
 package com.shopping_cart.models.binding_models;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import static com.shopping_cart.constants.ModelsMsgConstants.*;
 
-public class CartBindingModel {
+public class CartProductBindingModel {
 
     private String productId;
-    private int quantity;
 
-    public CartBindingModel() {
+    public CartProductBindingModel() {
     }
 
-    public CartBindingModel(String productId, int quantity) {
+    public CartProductBindingModel(String productId) {
         this.productId = productId;
-        this.quantity = quantity;
     }
 
     @NotEmpty(message = ID_NOT_EMPTY)
@@ -29,15 +26,5 @@ public class CartBindingModel {
 
     public void setProductId(String productId) {
         this.productId = productId;
-    }
-
-    @NotNull(message = ORDERED_QUANTITY_NOT_NULL)
-    @Min(value = 0 , message = ORDERED_QUANTITY_CANNOT_BE_NEGATIVE)
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 }

@@ -1,7 +1,7 @@
 package com.shopping_cart.web.rest_controllers;
 
 import com.shopping_cart.enums.RemoveProductFromCart;
-import com.shopping_cart.models.binding_models.CartBindingModel;
+import com.shopping_cart.models.binding_models.CartProductBindingModel;
 import com.shopping_cart.models.service_models.CartProductServiceModel;
 import com.shopping_cart.models.service_models.CartServiceModel;
 import com.shopping_cart.models.service_models.ProductServiceModel;
@@ -60,7 +60,7 @@ public class CartController {
     @PutMapping("/add")
     @PreAuthorize(HAS_ROLE_ADMIN_OR_USER)
     public ResponseEntity<?> addProductToCart(
-            @Valid @RequestBody CartBindingModel cartBindingModel,
+            @Valid @RequestBody CartProductBindingModel cartProductBindingModel,
             BindingResult bindingResult) {
 
         String userId = String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
@@ -70,7 +70,7 @@ public class CartController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(this.validationMsgUtil.parse(allErrors));
             }
             ProductServiceModel productServiceModel = this.cartService
-                    .addProductToCart(userId, cartBindingModel.getProductId(), cartBindingModel.getQuantity());
+                    .addProductToCart(userId, cartProductBindingModel.getProductId());
             if (productServiceModel == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(PRODUCT_NOT_FOUND);
             }
@@ -83,7 +83,7 @@ public class CartController {
     @PutMapping("/decrease")
     @PreAuthorize(HAS_ROLE_ADMIN_OR_USER)
     public ResponseEntity<?> decreaseProductCount(
-            @Valid @RequestBody CartBindingModel cartBindingModel,
+            @Valid @RequestBody CartProductBindingModel cartProductBindingModel,
             BindingResult bindingResult) {
 
         String userId = String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
@@ -93,16 +93,14 @@ public class CartController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(this.validationMsgUtil.parse(allErrors));
             }
             RemoveProductFromCart decreaseResult = this.cartService
-                    .decreaseProductCount(cartBindingModel.getProductId(), userId, cartBindingModel.getQuantity());
+                    .decreaseProductCount(cartProductBindingModel.getProductId(), userId);
             switch (decreaseResult) {
-                case PRODUCT_NOT_FOUND:
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(NO_SUCH_PRODUCT_IN_CART);
-                case QUANTITY_MORE_THAN_AVAILABLE:
-                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(QUANTITY_MORE_THAN_AVAILABLE);
                 case PRODUCT_QUANTITY_DECREASED:
                     return ResponseEntity.status(HttpStatus.OK).body(PRODUCT_QUANTITY_DECREASED);
-                default:
+                case PRODUCT_REMOVED_FROM_CART:
                     return ResponseEntity.status(HttpStatus.OK).body(PRODUCT_REMOVED_FROM_CART);
+                default:
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(NO_SUCH_PRODUCT_IN_CART);
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(FRIENDLY_INTERNAL_SERVER_ERROR);
@@ -117,12 +115,15 @@ public class CartController {
         try {
             CartServiceModel cartServiceModel = this.cartService.findCartByUserId(userId);
             CartProductServiceModel cartProductServiceModel = cartServiceModel.getCartProducts()
-                    .stream().filter(cp -> cp.getId().equals(cartProductId)).findFirst().orElse(null);
+                    .stream()
+                    .filter(cp -> cp.getId().equals(cartProductId))
+                    .findFirst()
+                    .orElse(null);
+
             if (cartProductServiceModel == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(PRODUCT_NOT_FOUND);
             }
-            this.cartService.removeProductFromCartList(
-                    cartProductServiceModel, cartServiceModel.getCartProducts(), cartServiceModel);
+            this.cartService.removeProductFromCartList(cartProductServiceModel, cartServiceModel);
 
             return ResponseEntity.status(HttpStatus.OK).body(PRODUCT_REMOVED_FROM_CART);
         } catch (Exception e) {

@@ -7,8 +7,6 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.shopping_cart.constants.DiscountConstants.DISCOUNT_OVER_2000;
-
 public class CartServiceModel extends BaseEntity {
 
     private UserServiceModel user;
@@ -45,7 +43,8 @@ public class CartServiceModel extends BaseEntity {
         }
 
         /* If totalPriceAfterQuantityDiscount is more than 2000 there is a 10% discount */
-        if (this.totalPriceAfterQuantityDiscount.compareTo(BigDecimal.valueOf(DISCOUNT_OVER_2000)) > 0) {
+        //TODO
+        if (this.totalPriceAfterQuantityDiscount.compareTo(BigDecimal.valueOf(300)) > 0) {
 
             this.totalPriceAfterAllSumDiscounts = this.totalPriceAfterQuantityDiscount
                     .divide(BigDecimal.valueOf(100), RoundingMode.HALF_DOWN).multiply(BigDecimal.valueOf(90));

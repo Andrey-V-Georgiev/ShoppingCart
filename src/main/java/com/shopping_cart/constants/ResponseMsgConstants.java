@@ -31,7 +31,6 @@ public class ResponseMsgConstants {
     public static final String PRODUCTS_SEARCH_NOT_FOUND = g.toJson("No such products by this keyword");
 
     public static final String NO_SUCH_PRODUCT_IN_CART = g.toJson("No such a product in cart");
-    public static final String QUANTITY_MORE_THAN_AVAILABLE = g.toJson("You are trying to decrease with more then the available quantity");
     public static final String CART_NOT_FOUND = g.toJson("Cart not found");
 
     public static final String FRIENDLY_INTERNAL_SERVER_ERROR = g.toJson("Your request has not been processed, please try again");

@@ -45,7 +45,9 @@ public class Cart extends BaseEntity {
         this.user = user;
     }
 
-    @OneToMany(targetEntity = CartProduct.class , fetch = FetchType.EAGER, cascade=CascadeType.MERGE)
+    //TODO
+    @OneToMany(targetEntity = CartProduct.class , fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    //@OneToMany(targetEntity = CartProduct.class , fetch = FetchType.EAGER, cascade=CascadeType.MERGE)
     @JoinColumn(name = "cart_id")
     public List<CartProduct> getCartProducts() {
         return cartProducts;
