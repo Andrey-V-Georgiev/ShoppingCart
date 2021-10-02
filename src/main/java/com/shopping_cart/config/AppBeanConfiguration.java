@@ -34,56 +34,54 @@ public class AppBeanConfiguration {
             ContactRepository contactRepository) {
 
         if (productRepository.count() == 0) {
-
-             productRepository.saveAll(Arrays.asList(
-                     new Product(
-                             "H&K VP9 Tactical OR",
-                             "The new HK VP9 Tactical OR (Optics Ready) Pistol is the latest addition to the VP family of HK pistols that is both optics-ready and suppressor-ready. This pistol stands out with its 4.7 inch hammer-forged barrel with threaded muzzle and suppressor-height tritium sights. Providing a day or night lower 1/3 co-witness through the window of a red dot sight, the sights remain visible over the top of most suppressors. Also included is an optics cut that, when combined with one of five availble adapter plates, accepts most popular red dot sights. Suppressor and/or optics can be added with no modifications needed.",
-                             "https://isteam.wsimg.com/ip/a7237bb7-0471-4ebe-82e6-c17ed6d9db95/ols/1055_original/:/rs=w:600,h:600",
-                             BigDecimal.valueOf(100),
-                             LocalDateTime.now()
-                     )
-//                    new Product(
-//                            "G19 Gen5 FS",
-//                            "The GLOCK 19 Gen5 pistol in 9mm Luger is ideal for a more versatile role due to its reduced dimensions. The new frame design without finger grooves still allows to instantly customize its grip to accommodate any hand size by mounting the different back straps. The reversible magazine catch and ambidextrous slide stop lever make it ideal for left and right-handed shooters. The rifling and the crown of the barrel were slightly modified for increased precision..",
-//                            "https://i.pinimg.com/originals/d8/3d/c7/d83dc74b151313c13fe94d1954c9f2d9.jpg",
-//                            BigDecimal.valueOf(729),
-//                            LocalDateTime.now()
-//                    ),
-//            new Product(
-//                    "GLOCK 17 Gen5",
-//                    "The new frame design of the GLOCK 17 Gen5 removed the finger grooves for more versatility but still allows to easily customize its grip by using the different back straps. A flared mag-well and a cutout at the front of the frame give the user more speed during reloading when fractions of a second matter. A reversible enlarged magazine catch, changeable at user level as well as the ambidextrous slide stop lever accommodate left and right-handed operators. The rifling and the crown of the barrel were slightly modified for increased precision.",
-//                    "https://cdnammoclub.ammoforsale.com/ammo-club/media/DSC08507-scaled.jpg",
-//                    BigDecimal.valueOf(911),
-//                    LocalDateTime.now()
-//            ),
-//                    new Product(
-//                            "Sig Sauer P220 LEGION",
-//                            "The Sig Sauer® P220® Legion SAO Full-Size Semi-Auto Pistol features a stainless steel slide with high-visibility Sig Sauer Electro-Optics X-RAY day/night sights. Custom G-10 grips allow sure handling, while front cocking serrations pair with aggressive checkering on the front strap and under the trigger guard to ensure a solid grip when it matters. An X-Five undercut on the trigger guard lets you get a higher grip for better weapon control. Low-profile levers reduce the risk of snagging when you need to get your weapon out in a hurry. Steel guide rod adds weight to enhance stability. ",
-//                            "https://i2.wp.com/shootarillusions.com/wp-content/uploads/2021/04/pix679079443.jpg?fit=1000%2C750&ssl=1",
-//                            BigDecimal.valueOf(1329),
-//                            LocalDateTime.now()
-//                    ),
-//                     new Product(
-//                             "CZ Shadow 2 OR",
-//                             "A sport special intended especially for fans of target shooting with large-calibre pistols, as well as anyone who agrees with the pistol guru, Jeff Cooper, that a double action trigger mechanism is an ingenious solution for a non-existent problem. (Although where the CZ 75 is concerned, Cooper himself admitted that the solution was indeed perfect). The single action variant of the phenomenal CZ SHADOW 2 model features a target style trigger blade made of aluminium alloy anodized blue and a combat style hammer with a large, weight-reducing hole. The trigger pull weight is set at 13 to 15 N",
-//                             "https://content.osgnetworks.tv/gunsandammo/content/photos/CZ-Shadow-2-OR-770.jpg",
-//                             BigDecimal.valueOf(1349),
-//                             LocalDateTime.now()
-//                     ),
-//                     new Product(
-//                             "STI DVC-P DUO 9mm",
-//                             "The STI DVC DUO (Dawson Universal Optic) system is designed to work with the Leupold Delta Point Pro, Trijicon RMR, and most popular optics that use the same mounting platform. 25 years of evolution and refinement resulted in the Omni. Nothing comes close.5″ Recoil Compensation. DUO (Dawson Universal Optic) with Fiber Optic Fron",
-//                             "https://pistol-forum.com/attachment.php?attachmentid=53982&d=1589495813",
-//                             BigDecimal.valueOf(3999),
-//                             LocalDateTime.now()
-//                     )
+            productRepository.saveAll(Arrays.asList(
+                    new Product(
+                            "H&K VP9 Tactical OR",
+                            "The new HK VP9 Tactical OR (Optics Ready) Pistol is the latest addition to the VP family of HK pistols that is both optics-ready and suppressor-ready. This pistol stands out with its 4.7 inch hammer-forged barrel with threaded muzzle and suppressor-height tritium sights. Providing a day or night lower 1/3 co-witness through the window of a red dot sight, the sights remain visible over the top of most suppressors. Also included is an optics cut that, when combined with one of five availble adapter plates, accepts most popular red dot sights. Suppressor and/or optics can be added with no modifications needed.",
+                            "https://isteam.wsimg.com/ip/a7237bb7-0471-4ebe-82e6-c17ed6d9db95/ols/1055_original/:/rs=w:600,h:600",
+                            BigDecimal.valueOf(848),
+                            LocalDateTime.now()
+                    ),
+                    new Product(
+                            "G19 Gen5 FS",
+                            "The GLOCK 19 Gen5 pistol in 9mm Luger is ideal for a more versatile role due to its reduced dimensions. The new frame design without finger grooves still allows to instantly customize its grip to accommodate any hand size by mounting the different back straps. The reversible magazine catch and ambidextrous slide stop lever make it ideal for left and right-handed shooters. The rifling and the crown of the barrel were slightly modified for increased precision..",
+                            "https://i.pinimg.com/originals/d8/3d/c7/d83dc74b151313c13fe94d1954c9f2d9.jpg",
+                            BigDecimal.valueOf(729),
+                            LocalDateTime.now()
+                    ),
+                    new Product(
+                            "GLOCK 17 Gen5",
+                            "The new frame design of the GLOCK 17 Gen5 removed the finger grooves for more versatility but still allows to easily customize its grip by using the different back straps. A flared mag-well and a cutout at the front of the frame give the user more speed during reloading when fractions of a second matter. A reversible enlarged magazine catch, changeable at user level as well as the ambidextrous slide stop lever accommodate left and right-handed operators. The rifling and the crown of the barrel were slightly modified for increased precision.",
+                            "https://cdnammoclub.ammoforsale.com/ammo-club/media/DSC08507-scaled.jpg",
+                            BigDecimal.valueOf(911),
+                            LocalDateTime.now()
+                    ),
+                    new Product(
+                            "Sig Sauer P220 LEGION",
+                            "The Sig Sauer® P220® Legion SAO Full-Size Semi-Auto Pistol features a stainless steel slide with high-visibility Sig Sauer Electro-Optics X-RAY day/night sights. Custom G-10 grips allow sure handling, while front cocking serrations pair with aggressive checkering on the front strap and under the trigger guard to ensure a solid grip when it matters. An X-Five undercut on the trigger guard lets you get a higher grip for better weapon control. Low-profile levers reduce the risk of snagging when you need to get your weapon out in a hurry. Steel guide rod adds weight to enhance stability. ",
+                            "https://i2.wp.com/shootarillusions.com/wp-content/uploads/2021/04/pix679079443.jpg?fit=1000%2C750&ssl=1",
+                            BigDecimal.valueOf(1329),
+                            LocalDateTime.now()
+                    ),
+                    new Product(
+                            "CZ Shadow 2 OR",
+                            "A sport special intended especially for fans of target shooting with large-calibre pistols, as well as anyone who agrees with the pistol guru, Jeff Cooper, that a double action trigger mechanism is an ingenious solution for a non-existent problem. (Although where the CZ 75 is concerned, Cooper himself admitted that the solution was indeed perfect). The single action variant of the phenomenal CZ SHADOW 2 model features a target style trigger blade made of aluminium alloy anodized blue and a combat style hammer with a large, weight-reducing hole. The trigger pull weight is set at 13 to 15 N",
+                            "https://content.osgnetworks.tv/gunsandammo/content/photos/CZ-Shadow-2-OR-770.jpg",
+                            BigDecimal.valueOf(1349),
+                            LocalDateTime.now()
+                    ),
+                    new Product(
+                            "STI DVC-P DUO 9mm",
+                            "The STI DVC DUO (Dawson Universal Optic) system is designed to work with the Leupold Delta Point Pro, Trijicon RMR, and most popular optics that use the same mounting platform. 25 years of evolution and refinement resulted in the Omni. Nothing comes close.5″ Recoil Compensation. DUO (Dawson Universal Optic) with Fiber Optic Fron",
+                            "https://pistol-forum.com/attachment.php?attachmentid=53982&d=1589495813",
+                            BigDecimal.valueOf(3999),
+                            LocalDateTime.now()
+                    )
             ));
         }
 
         if (contactRepository.count() == 0) {
-
-             contactRepository.saveAll(Arrays.asList(
+            contactRepository.saveAll(Arrays.asList(
                     new Contact(
                             "Sofia",
                             "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2932.3179396759338!2d23.329512315700562!3d42.69698822174912!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40aa8570f039ab5f%3A0x29f700e9fb9d4353!2sul.%20%22Moskovska%22%2033%2C%201000%20Sofia%20Center%2C%20Sofia!5e0!3m2!1sen!2sbg!4v1628771840855!5m2!1sen!2sbg",

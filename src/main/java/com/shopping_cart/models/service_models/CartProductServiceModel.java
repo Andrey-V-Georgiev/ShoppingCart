@@ -2,24 +2,10 @@ package com.shopping_cart.models.service_models;
 
 import com.shopping_cart.models.entities.BaseEntity;
 
-import java.math.BigDecimal;
-
 public class CartProductServiceModel extends BaseEntity {
 
     private ProductServiceModel product;
     private Integer quantity;
-    private BigDecimal totalPrice;
-    private BigDecimal totalPriceAfterQuantityDiscount;
-
-//    public void calculateTotalFields() {
-//        this.totalPrice = product.getPrice().multiply(BigDecimal.valueOf(quantity));
-//        if (quantity > 1) {
-//            this.totalPriceAfterQuantityDiscount = this.totalPrice
-//                    .divide(BigDecimal.valueOf(100)).multiply(BigDecimal.valueOf(90));
-//        } else {
-//            this.totalPriceAfterQuantityDiscount = this.totalPrice;
-//        }
-//    }
 
     public void increaseQuantity() {
         this.quantity += 1;
@@ -52,19 +38,4 @@ public class CartProductServiceModel extends BaseEntity {
         this.quantity = quantity;
     }
 
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    public BigDecimal getTotalPriceAfterQuantityDiscount() {
-        return totalPriceAfterQuantityDiscount;
-    }
-
-    public void setTotalPriceAfterQuantityDiscount(BigDecimal totalPriceAfterQuantityDiscount) {
-        this.totalPriceAfterQuantityDiscount = totalPriceAfterQuantityDiscount;
-    }
 }

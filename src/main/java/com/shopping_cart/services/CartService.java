@@ -4,6 +4,7 @@ import com.shopping_cart.enums.RemoveProductFromCart;
 import com.shopping_cart.models.service_models.CartProductServiceModel;
 import com.shopping_cart.models.service_models.CartServiceModel;
 import com.shopping_cart.models.service_models.ProductServiceModel;
+import com.shopping_cart.models.view_models.CartViewModel;
 
 
 public interface CartService {
@@ -19,4 +20,6 @@ public interface CartService {
     void emptyTheCart(String userId);
 
     boolean checkCartIsEmpty(String userId);
+
+    CartViewModel calculateCartDiscount(CartServiceModel cartServiceModel);
 }

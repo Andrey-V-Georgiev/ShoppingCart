@@ -5,6 +5,7 @@ import com.shopping_cart.models.service_models.ProductServiceModel;
 import com.shopping_cart.services.ProductService;
 import com.shopping_cart.utils.ValidationMsgUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -59,7 +61,6 @@ public class ProductController {
 
 
     @GetMapping("/all")
-    @PreAuthorize(HAS_ROLE_ADMIN_OR_USER)
     public ResponseEntity<?> findAllProduct() {
         try {
             List<ProductServiceModel> productServiceModelAll = this.productService.findAll();
@@ -122,6 +123,8 @@ public class ProductController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(PRODUCT_NOT_FOUND);
             }
             return ResponseEntity.status(HttpStatus.OK).body(PRODUCT_REMOVED);
+        } catch(DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(PRODUCT_EXIST_IN_CUSTOMER_CART);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(FRIENDLY_INTERNAL_SERVER_ERROR);
         }

@@ -29,6 +29,7 @@ public class ResponseMsgConstants {
     public static final String PRODUCTS_NOT_FOUND = g.toJson("No products found");
     public static final String PRODUCT_ALREADY_EXISTS = g.toJson("Product with the same name already exists");
     public static final String PRODUCTS_SEARCH_NOT_FOUND = g.toJson("No such products by this keyword");
+    public static final String PRODUCT_EXIST_IN_CUSTOMER_CART = g.toJson("This product exist in customer cart");
 
     public static final String NO_SUCH_PRODUCT_IN_CART = g.toJson("No such a product in cart");
     public static final String CART_NOT_FOUND = g.toJson("Cart not found");

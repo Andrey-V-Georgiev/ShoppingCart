@@ -49,7 +49,7 @@ public class CartController {
             if (cartServiceModel == null) {
                 return ResponseEntity.status(HttpStatus.OK).body(CART_NOT_FOUND);
             }
-            CartViewModel cartViewModel = this.modelMapper.map(cartServiceModel, CartViewModel.class);
+            CartViewModel cartViewModel = this.cartService.calculateCartDiscount(cartServiceModel);
 
             return ResponseEntity.status(HttpStatus.OK).body(cartViewModel);
         } catch (Exception e) {

@@ -5,6 +5,7 @@ import com.shopping_cart.models.entities.Cart;
 import com.shopping_cart.models.service_models.CartProductServiceModel;
 import com.shopping_cart.models.service_models.CartServiceModel;
 import com.shopping_cart.models.service_models.ProductServiceModel;
+import com.shopping_cart.models.view_models.CartViewModel;
 import com.shopping_cart.repositories.CartRepository;
 import com.shopping_cart.services.CartProductService;
 import com.shopping_cart.services.CartService;
@@ -14,6 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -66,8 +70,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public RemoveProductFromCart decreaseProductCount(String productId, String userId) {
 
-        ProductServiceModel productServiceModel = this.productService.findById(productId);
-        if (productServiceModel == null) {
+        if (this.productService.findById(productId) == null) {
             return null;
         }
         CartServiceModel cartServiceModel = this.findCartByUserId(userId);
@@ -107,7 +110,7 @@ public class CartServiceImpl implements CartService {
         for (CartProductServiceModel cartProduct : cartProducts) {
             this.cartProductService.removeById(cartProduct.getId());
         }
-        cartServiceModel.reset();
+        cartServiceModel.setCartProducts(new ArrayList<>());
         this.cartRepository.saveAndFlush(this.modelMapper.map(cartServiceModel, Cart.class));
     }
 
@@ -116,5 +119,60 @@ public class CartServiceImpl implements CartService {
         CartServiceModel cartServiceModel = this.findCartByUserId(userId);
         List<CartProductServiceModel> cartProducts = cartServiceModel.getCartProducts();
         return cartProducts.size() == 0;
+    }
+
+    @Override
+    public CartViewModel calculateCartDiscount(CartServiceModel cartServiceModel) {
+
+        BigDecimal totalPriceProducts = BigDecimal.ZERO;
+        BigDecimal totalPriceAfterQuantityDiscount = BigDecimal.ZERO;
+        BigDecimal totalPriceAfterAllSumDiscounts;
+        BigDecimal finalDiscountInMoney;
+        BigDecimal onePercentOfTotalPriceProducts;
+        double finalDiscountInPercent = 0.0;
+
+        /* Calculate price sum of all products before and after quantity discount */
+        for (CartProductServiceModel cartProduct : cartServiceModel.getCartProducts()) {
+            int productQuantity = cartProduct.getQuantity();
+
+            BigDecimal totalPriceProduct = cartProduct
+                    .getProduct()
+                    .getPrice()
+                    .multiply(BigDecimal.valueOf(productQuantity));
+
+            totalPriceProducts = totalPriceProducts.add(totalPriceProduct);
+
+            /* If ordered quantity of same product is more than one, there is 10% discount */
+            if (productQuantity > 1) {
+                totalPriceProduct = totalPriceProduct
+                        .divide(BigDecimal.valueOf(100), RoundingMode.HALF_DOWN).multiply(BigDecimal.valueOf(90));
+            }
+            totalPriceAfterQuantityDiscount = totalPriceAfterQuantityDiscount.add(totalPriceProduct);
+        }
+
+        /* If totalPriceAfterQuantityDiscount is more than 3000 there is 10% discount */
+        if (totalPriceAfterQuantityDiscount.compareTo(BigDecimal.valueOf(3000)) > 0) {
+            totalPriceAfterAllSumDiscounts = totalPriceAfterQuantityDiscount
+                    .divide(BigDecimal.valueOf(100), RoundingMode.HALF_DOWN).multiply(BigDecimal.valueOf(90));
+        } else {
+            totalPriceAfterAllSumDiscounts = totalPriceAfterQuantityDiscount;
+        }
+        finalDiscountInMoney = totalPriceProducts.subtract(totalPriceAfterAllSumDiscounts);
+        onePercentOfTotalPriceProducts = totalPriceProducts.divide(BigDecimal.valueOf(100), RoundingMode.HALF_DOWN);
+
+        if (totalPriceProducts.compareTo(BigDecimal.ZERO) > 0) {
+            finalDiscountInPercent = finalDiscountInMoney
+                    .divide(onePercentOfTotalPriceProducts, RoundingMode.HALF_DOWN)
+                    .doubleValue();
+        }
+        CartViewModel cartViewModel = new CartViewModel(
+                cartServiceModel.getCartProducts(),
+                totalPriceProducts,
+                totalPriceAfterQuantityDiscount,
+                totalPriceAfterAllSumDiscounts,
+                finalDiscountInPercent,
+                finalDiscountInMoney
+        );
+        return cartViewModel;
     }
 }
