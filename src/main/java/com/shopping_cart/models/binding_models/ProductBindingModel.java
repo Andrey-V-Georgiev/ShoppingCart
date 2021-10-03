@@ -15,6 +15,15 @@ public class ProductBindingModel {
     private String pictureUrl;
     private BigDecimal price;
 
+    public ProductBindingModel() {
+    }
+
+    public ProductBindingModel(String name, String description, String pictureUrl, BigDecimal price) {
+        this.name = name;
+        this.description = description;
+        this.pictureUrl = pictureUrl;
+        this.price = price;
+    }
 
     @NotEmpty(message = PRODUCT_NAME_NOT_EMPTY)
     @NotNull(message = PRODUCT_NAME_NOT_NULL)

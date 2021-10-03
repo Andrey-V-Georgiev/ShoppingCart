@@ -14,6 +14,21 @@ public class ProductServiceModel extends BaseServiceModel {
     public ProductServiceModel() {
     }
 
+    public ProductServiceModel(String name, String description, String pictureUrl, BigDecimal price) {
+        this.name = name;
+        this.description = description;
+        this.pictureUrl = pictureUrl;
+        this.price = price;
+    }
+
+    public ProductServiceModel(String name, String description, String pictureUrl, BigDecimal price, LocalDateTime addedOn) {
+        this.name = name;
+        this.description = description;
+        this.pictureUrl = pictureUrl;
+        this.price = price;
+        this.addedOn = addedOn;
+    }
+
     public String getName() {
         return name;
     }
