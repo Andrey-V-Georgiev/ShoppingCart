@@ -25,6 +25,15 @@ public class User extends BaseEntity {
         super();
     }
 
+    public User(String username, String email, String password, String token, String role, LocalDateTime registrationDate) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.token = token;
+        this.role = role;
+        this.registrationDate = registrationDate;
+    }
+
     @OneToOne(targetEntity=Cart.class,cascade=CascadeType.ALL)
     public Cart getCart() {
         return cart;

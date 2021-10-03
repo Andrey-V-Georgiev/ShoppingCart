@@ -11,7 +11,7 @@ import java.util.List;
 public class Cart extends BaseEntity {
 
     private User user;
-    private List<CartProduct> cartProducts;
+    private List<CartProduct> cartProducts = new ArrayList<>();
 
     public Cart() {
     }
